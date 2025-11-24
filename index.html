@@ -126,6 +126,60 @@
       margin-right:6px;
       font-size:22px
     }
+    
+        .carousel-container{
+      margin-top:32px;
+      position:relative;
+      overflow:hidden;
+      border-radius:var(--radius);
+      background:rgba(255,255,255,.02);
+      border:1px solid rgba(255,255,255,.05);
+      box-shadow:0 8px 30px rgba(0,0,0,.4);
+      padding:20px 0;
+    }
+
+    .carousel{
+      display:flex;
+      transition:transform .4s ease-in-out;
+    }
+
+    .carousel-item{
+      min-width:100%;
+      display:flex;
+      justify-content:center;
+    }
+
+    .phone-frame{
+      width:260px;
+      border-radius:28px;
+      padding:12px;
+      background:#000;
+      box-shadow:0 8px 30px rgba(0,0,0,.6);
+    }
+
+    .phone-frame img{
+      width:100%;
+      border-radius:20px;
+      display:block;
+    }
+
+    .carousel-btn{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      background:rgba(0,0,0,.4);
+      border:none;
+      color:white;
+      padding:12px;
+      border-radius:50%;
+      cursor:pointer;
+      backdrop-filter:blur(8px);
+    }
+
+    .carousel-btn:hover{background:rgba(0,0,0,.6)}
+
+    .carousel-btn.prev{left:10px}
+    .carousel-btn.next{right:10px}
   </style>
 </head>
 
@@ -172,6 +226,54 @@
       <div class="card"><h3><span class="icon">tune</span>Sensitivitas Presisi</h3><p class="muted">Kontrol sensitivitas tingkat lanjutan.</p></div>
       <div class="card"><h3><span class="icon">my_location</span>Crosshair Overlay</h3><p class="muted">Overlay layar, bukan mod game.</p></div>
       <div class="card"><h3><span class="icon">folder_open</span>Manajemen File</h3><p class="muted">Pasang konfigurasi ke <code>Android/data/com.dts.freefireth</code>.</p></div>
+    </div>
+  </section>
+  
+    <section style="margin-top:32px">
+    <h2>Screenshot Aplikasi</h2>
+
+    <div class="carousel-container">
+      
+      <button class="carousel-btn prev" onclick="prevSlide()">&#10094;</button>
+      <button class="carousel-btn next" onclick="nextSlide()">&#10095;</button>
+
+      <div class="carousel" id="carousel">
+        
+        <div class="carousel-item">
+          <div class="phone-frame">
+            <img src="https://cortiezapp.github.io/images/Screenshot1.jpg" alt="Screenshot 1">
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <div class="phone-frame">
+            <img src="https://cortiezapp.github.io/images/Screenshot2.jpg" alt="Screenshot 2">
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="phone-frame">
+            <img src="https://cortiezapp.github.io/images/Screenshot3.jpg" alt="Screenshot 3">
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <div class="phone-frame">
+            <img src="https://cortiezapp.github.io/images/Screenshot4.jpg" alt="Screenshot 4">
+          </div>
+        </div>
+        
+                <div class="carousel-item">
+          <div class="phone-frame">
+            <img src="https://cortiezapp.github.io/images/Screenshot5.jpg" alt="Screenshot 5">
+          </div>
+        </div>
+        
+                <div class="carousel-item">
+          <div class="phone-frame">
+            <img src="https://cortiezapp.github.io/images/Screenshot6.jpg" alt="Screenshot 6">
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
