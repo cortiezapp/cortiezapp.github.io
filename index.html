@@ -193,6 +193,20 @@ h3 .icon {
     display: flex;
     align-items: center;
 }
+.btn,
+.muted-btn {
+  display: inline-flex;
+  align-items: center;    /* sejajarkan ikon & teks */
+  gap: 6px;               /* jarak ikon – teks */
+}
+
+.muted-btn {
+  padding:10px 12px;
+  border-radius:10px;
+  text-decoration:none;
+  background:rgba(255,255,255,.04);
+  color:var(--muted);
+}
 
 </style>
 </head>
@@ -207,11 +221,12 @@ h3 .icon {
         <img src="https://ibnuxiter.github.io/Assets/app_icon.png" alt="Logo Cortiez">
       </div>
       <div>
-        <div style="font-size:1.1rem;font-weight:700">Cortiez</div>
-        <div style="font-size:12px;color:var(--muted)">Game Booster • Shizuku Powered</div>
+        <div style="font-size:2.1rem;font-weight:700">Cortiez</div>
+        <div style="font-size:14px;color:var(--muted)">Game Booster • Shizuku Powered</div>
       </div>
     </a>
-    <a href="cortiez.apk" class="btn"><span class="icon">download</span>Download</a>
+<a href="cortiez.apk" class="btn"><span class="icon">download</span></a>
+
   </header>
 
   <section class="hero">
@@ -220,10 +235,18 @@ h3 .icon {
       <p class="muted">Cortiez adalah project gabungan dari <strong>IbnuXiter</strong> dan <strong>CyrustMods</strong>, berfokus pada boosting performa dan konfigurasi perangkat — <strong>tidak melakukan injeksi ke game</strong>.</p>
       <p class="muted">Cortiez juga mendukung pemasangan file konfigurasi ke <code>Android/data/com.dts.freefireth</code>.</p>
 
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <a href="cortiez.apk" class="btn"><span class="icon">download</span>Download Cortiez</a>
-        <a href="#fitur" class="muted" style="padding:10px 12px;border-radius:10px;text-decoration:none;background:rgba(255,255,255,.04)"><span class="icon">apps</span>Lihat Fitur</a>
-      </div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+  <a href="cortiez.apk" class="btn">
+    <span class="icon">download</span>
+    Download Cortiez
+  </a>
+  
+  <a href="#fitur" class="muted-btn">
+    <span class="icon">apps</span>
+    Lihat Fitur
+  </a>
+</div>
+
     </div>
 
     <aside style="background:rgba(255,255,255,.02);border-radius:14px;padding:16px">
