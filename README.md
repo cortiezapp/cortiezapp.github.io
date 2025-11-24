@@ -1,5 +1,3 @@
----
-
 ## Tentang Aplikasi Cortiez
 Cortiez adalah aplikasi tuning & booster berbasis Shizuku yang berfungsi untuk:
 
@@ -9,7 +7,3 @@ Cortiez adalah aplikasi tuning & booster berbasis Shizuku yang berfungsi untuk:
 - Monitor FPS legal  
 - Manajemen file konfigurasi  
 - *Tanpa injeksi ke game* (aman digunakan)
-
----
-
-## 🛠 Cara Menggunakan
