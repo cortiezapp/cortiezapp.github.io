@@ -1,32 +1,210 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cortiez Landing Page</title>
-    <link rel="stylesheet" href="style/main.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cortiez — Game Booster Berbasis Shizuku</title>
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- App Icon -->
+  <link rel="icon" type="image/png" href="https://ibnuxiter.github.io/Assets/app_icon.png">
+  <link rel="apple-touch-icon" href="https://ibnuxiter.github.io/Assets/app_icon.png">
+  <link rel="shortcut icon" href="https://ibnuxiter.github.io/Assets/app_icon.png">
+
+  <style>
+
+    @font-face {
+      font-family: "GFFLatin";
+      src: url("https://ibnuxiter.github.io/Assets/font/GFF-Latin-Thin.woff2") format("woff2");
+      font-weight: 100;
+    }
+    @font-face {
+      font-family: "GFFLatin";
+      src: url("https://ibnuxiter.github.io/Assets/font/GFF-Latin-Regular.woff2") format("woff2");
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: "GFFLatin";
+      src: url("https://ibnuxiter.github.io/Assets/font/GFF-Latin-Medium.woff2") format("woff2");
+      font-weight: 500;
+    }
+    @font-face {
+      font-family: "GFFLatin";
+      src: url("https://ibnuxiter.github.io/Assets/font/GFF-Latin-Bold.woff2") format("woff2");
+      font-weight: 700;
+    }
+
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#9aa4b2;
+      --accent:#38bdf8;
+      --accent2:#7c3aed;
+      --radius:14px;
+      font-family:"GFFLatin";
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      color:#e6eef6;
+      background:linear-gradient(180deg,#071022,#081228);
+      padding:24px;
+      line-height:1.5;
+      font-family:"GFFLatin";
+    }
+
+    .wrap{max-width:1000px;margin:0 auto}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+
+    .logo{
+      display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;
+    }
+
+    .logo-box{
+      width:48px;height:48px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      display:flex;justify-content:center;align-items:center;
+      box-shadow:0 8px 22px rgba(7,30,60,.4);
+      overflow:hidden;
+    }
+
+    .logo-box img{width:100%;height:100%;object-fit:cover}
+
+    .hero{
+      padding:28px;border-radius:var(--radius);
+      background:rgba(255,255,255,.02);
+      display:grid;gap:20px;grid-template-columns:1fr;
+      box-shadow:0 8px 30px rgba(3,10,20,.6);
+      animation:fade .6s ease-out;
+    }
+
+    @keyframes fade{
+      from{opacity:0;transform:translateY(20px)}
+      to{opacity:1;transform:none}
+    }
+
+    .btn{
+      display:inline-block;
+      padding:12px 16px;
+      border-radius:12px;
+      color:#012;
+      font-weight:700;
+      text-decoration:none;
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      font-family:"GFFLatin";
+    }
+
+    .muted{color:var(--muted)}
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:16px;margin-top:18px;
+    }
+
+    .card{
+      padding:18px;border-radius:var(--radius);
+      background:rgba(255,255,255,.02);
+      border:1px solid rgba(255,255,255,.05);
+      animation:fade .6s ease-out;
+    }
+
+    footer{text-align:center;margin-top:30px;color:var(--muted);font-size:13px}
+
+    @media(min-width:760px){
+      .hero{grid-template-columns:1fr 360px}
+      .grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    .icon{
+      font-family:"Material Icons";
+      vertical-align:middle;
+      margin-right:6px;
+      font-size:22px
+    }
+  </style>
 </head>
+
+
 <body>
-    <header class="hero">
-        <nav>
-            <h1 class="logo">CORTIEZ</h1>
-        </nav>
-        <div class="hero-content">
-            <h2>Selamat datang di Cortiez</h2>
-            <p>Landing page modern dan responsif.</p>
-            <a href="#contact" class="btn">Mulai Sekarang</a>
-        </div>
-    </header>
+<div class="wrap">
 
-    <section id="about" class="section">
-        <h2>Tentang Kami</h2>
-        <p>Kami menyediakan solusi digital terbaik untuk brand Anda.</p>
-    </section>
+  <header>
+    <a class="logo">
+      <div class="logo-box">
+        <img src="https://ibnuxiter.github.io/Assets/app_icon.png" alt="Logo Cortiez">
+      </div>
+      <div>
+        <div style="font-size:1.1rem;font-weight:700">Cortiez</div>
+        <div style="font-size:12px;color:var(--muted)">Game Booster • Shizuku Powered</div>
+      </div>
+    </a>
+    <a href="cortiez.apk" class="btn"><span class="icon">download</span>Download</a>
+  </header>
 
-    <footer>
-        <p>© 2025 Cortiez. All rights reserved.</p>
-    </footer>
+  <section class="hero">
+    <div>
+      <h1>Boost Performa Game-mu dengan Cortiez</h1>
+      <p class="muted">Cortiez adalah project gabungan dari <strong>IbnuXiter</strong> dan <strong>CyrustMods</strong>, berfokus pada boosting performa dan konfigurasi perangkat — <strong>tidak melakukan injeksi ke game</strong>.</p>
+      <p class="muted">Cortiez juga mendukung pemasangan file konfigurasi ke <code>Android/data/com.dts.freefireth</code>.</p>
 
-    <script src="script/main.js"></script>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a href="cortiez.apk" class="btn"><span class="icon">download</span>Download Cortiez</a>
+        <a href="#fitur" class="muted" style="padding:10px 12px;border-radius:10px;text-decoration:none;background:rgba(255,255,255,.04)"><span class="icon">apps</span>Lihat Fitur</a>
+      </div>
+    </div>
+
+    <aside style="background:rgba(255,255,255,.02);border-radius:14px;padding:16px">
+      <h3><span class="icon">groups</span>Tim Developer</h3>
+      <p class="muted">Dikembangkan oleh IbnuXiter & CyrustMods — fokus pada performa, keamanan, dan kontrol penuh pengguna.</p>
+    </aside>
+  </section>
+
+  <section id="fitur" style="margin-top:28px">
+    <h2>Fitur Utama</h2>
+    <div class="grid">
+      <div class="card"><h3><span class="icon">rocket</span>Game Booster</h3><p class="muted">Optimasi RAM, CPU, jaringan, tanpa menyentuh file game.</p></div>
+      <div class="card"><h3><span class="icon">speed</span>FPS Monitor</h3><p class="muted">Overlay FPS aman dan legal.</p></div>
+      <div class="card"><h3><span class="icon">tune</span>Sensitivitas Presisi</h3><p class="muted">Kontrol sensitivitas tingkat lanjutan.</p></div>
+      <div class="card"><h3><span class="icon">my_location</span>Crosshair Overlay</h3><p class="muted">Overlay layar, bukan mod game.</p></div>
+      <div class="card"><h3><span class="icon">folder_open</span>Manajemen File</h3><p class="muted">Pasang konfigurasi ke <code>Android/data/com.dts.freefireth</code>.</p></div>
+    </div>
+  </section>
+
+  <section style="margin-top:28px">
+    <h2>Changelog / What's New</h2>
+    <div class="card">
+      <ul class="muted">
+        <li>UI baru lebih modern.</li>
+        <li>Penambahan Material Icons.</li>
+        <li>File manager diperluas.</li>
+        <li>Optimasi Shizuku engine.</li>
+        <li>Peningkatan keamanan & stabilitas.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section style="margin-top:28px">
+    <h2>Paket: Gratis & Premium</h2>
+    <div class="grid">
+      <div class="card"><h3><span class="icon">star_border</span>Gratis</h3><p class="muted">Booster standar, FPS monitor, crosshair dasar.</p></div>
+      <div class="card"><h3><span class="icon">workspace_premium</span>Premium</h3><p class="muted">Booster pro, tema UI premium, sensitivitas lanjutan, crosshair custom.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Cortiez — IbnuXiter × CyrustMods
+  </footer>
+
+</div>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
 </body>
 </html>
