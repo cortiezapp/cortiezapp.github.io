@@ -209,6 +209,33 @@ h3 .icon {
   background:rgba(255,255,255,.04);
   color:var(--muted);
 }
+.dev-social{
+  display:flex;
+  gap:12px;
+  margin-top:12px;
+}
+
+.dev-social a{
+  width:40px;
+  height:40px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.05);
+  transition:.25s ease;
+}
+
+.dev-social a:hover{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.1);
+}
+
+.dev-social img{
+  width:22px;
+  height:22px;
+}
+
 
 </style>
 </head>
@@ -252,10 +279,26 @@ h3 .icon {
 
     </div>
 
-    <aside style="background:rgba(255,255,255,.02);border-radius:14px;padding:16px">
-      <h3><span class="icon">groups</span>Tim Developer</h3>
-      <p class="muted">Dikembangkan oleh IbnuXiter & CyrustMods — fokus pada performa, keamanan, dan kontrol penuh pengguna.</p>
-    </aside>
+<aside style="background:rgba(255,255,255,.02);border-radius:14px;padding:16px">
+  <h3><span class="icon">groups</span>Tim Developer</h3>
+  <p class="muted">
+    Dikembangkan oleh IbnuXiter & CyrustMods — fokus pada performa, keamanan, dan kontrol penuh pengguna.
+  </p>
+
+  <div class="dev-social">
+    <!-- WhatsApp -->
+    <a href="https://whatsapp.com/channel/0029Vb6ygqx9Bb5whdu1Wg2V" target="_blank" aria-label="WhatsApp">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg">
+    </a>
+
+    <!-- Telegram -->
+    <a href="https://t.me/cortiezapp" target="_blank" aria-label="Telegram">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/telegram.svg">
+    </a>
+  </div>
+</aside>
+
+
   </section>
 
   <section id="fitur" style="margin-top:28px">
