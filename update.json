@@ -2,7 +2,7 @@
   "update_info": {
     "latest_version": "1.0",
     "mandatory": true,
-    "download_url": "https://play.google.com/store/apps/details?id=com.cyrust.fftools",
+    "download_url": "https://cortiezapp.github.io",
     "changelog": ["Fix bugs", "Performance boost"],
     "update_title": "Update Available!",
     "update_message": "New version brings improvements",
