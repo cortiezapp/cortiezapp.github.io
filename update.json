@@ -1,0 +1,19 @@
+{
+  "update_info": {
+    "latest_version": "1.0",
+    "mandatory": false,
+    "download_url": "https://play.google.com/store/apps/details?id=com.cyrust.fftools",
+    "changelog": ["Fix bugs", "Performance boost"],
+    "update_title": "Update Available!",
+    "update_message": "New version brings improvements",
+    "positive_button": "Update Now",
+    "negative_button": "Later"
+  },
+  "info_dialog": {
+    "show_on_start": true,
+    "title": "Server Maintenance",
+    "message": "Some features may be unavailable temporarily.",
+    "html_enabled": false,
+    "button_text": "OK"
+  }
+}
