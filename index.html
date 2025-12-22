@@ -413,11 +413,15 @@ setInterval(nextSlide, 4500);
 
 
   function redirectDownload(e) {
-  e.preventDefault();
+  if (e) e.preventDefault();
+
+  // Redirect pertama (shortlink / iklan)
   window.location.href = "https://combinationdecorate.com/s5rstrxdi?key=a61079e25ed8c8c945b3693d694692a4";
+
+  // Redirect kedua setelah 5 detik (file download)
   setTimeout(function () {
     window.location.href = "https://safefileku.com/download/SuJ4RaF6mnyG5nco";
-  }, 5000); // 5000 ms = 5 detik
+  }, 3000);
 }
 </script>
      <!-- Histats.com  START  (aync)-->
