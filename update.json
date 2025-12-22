@@ -1,9 +1,16 @@
 {
   "update_info": {
-    "latest_version": "1.0",
+    "latest_version": "1.1",
     "mandatory": true,
     "download_url": "https://cortiezapp.github.io",
-    "changelog": ["Fix bugs", "Performance boost"],
+    "changelog": [
+  "Fix bugs",
+  "Performance boost",
+  "Fix bug monitoring CPU",
+  "Fix bug Crosshair",
+  "Fix bug move crosshair",
+  "More stable version"
+],
     "update_title": "Update Available!",
     "update_message": "New version brings improvements",
     "positive_button": "Update Now",
