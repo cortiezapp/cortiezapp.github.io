@@ -1,0 +1,25 @@
+{
+  "notifications": [
+    {
+      "id": 1001,
+      "hour": 8,
+      "minute": 0,
+      "title": "CortiezSensix Pagi",
+      "message": "Aktifkan Sensix untuk performa maksimal 🔥"
+    },
+    {
+      "id": 1002,
+      "hour": 13,
+      "minute": 0,
+      "title": "CortiezSensix Siang",
+      "message": "Jaga aim & stabilitas sensi 🎯"
+    },
+    {
+      "id": 1003,
+      "hour": 20,
+      "minute": 0,
+      "title": "CortiezSensix Malam",
+      "message": "Waktunya push rank 🚀"
+    }
+  ]
+}
