@@ -4,22 +4,23 @@
       "id": 1001,
       "hour": 8,
       "minute": 0,
-      "title": "CortiezSensix Pagi",
-      "message": "Aktifkan Sensix untuk performa maksimal 🔥"
+      "title": "Optimalisasi Pagi",
+      "message": "Aktifkan Sensix untuk memastikan responsivitas dan performa perangkat yang maksimal hari ini."
     },
     {
       "id": 1002,
       "hour": 13,
       "minute": 0,
-      "title": "CortiezSensix Siang",
-      "message": "Jaga aim & stabilitas sensi 🎯"
+      "title": "Stabilitas Sistem",
+      "message": "Pastikan presisi dan stabilitas kontrol tetap terjaga untuk pengalaman penggunaan yang konsisten."
     },
     {
       "id": 1003,
-      "hour": 20,
-      "minute": 0,
-      "title": "CortiezSensix Malam",
-      "message": "Waktunya push rank 🚀"
+      "hour": 22,
+      "minute": 20,
+      "title": "Performa Kompetitif",
+      "message": "Optimalkan konfigurasi Sensix sekarang untuk mencapai performa puncak pada sesi malam ini."
     }
   ]
 }
+
