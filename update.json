@@ -19,8 +19,8 @@
   
   "info_dialog": {
     "show_on_start": true,
-    "title": "Wellcome",
-    "message": "Join for support\n\n⚠️ Maintenance Notice\nAplikasi sedang dalam proses maintenance untuk peningkatan performa dan stabilitas. Mohon tunggu update selanjutnya.\n\nTikTok:\nhttps://www.tiktok.com/@cortiezapp\n\nWhatsApp Channel:\nhttps://whatsapp.com/channel/0029Vb6ygqx9Bb5whdu1Wg2V"
+    "title": "⚠️ Maintenance Notice",
+    "message": "\nAplikasi sedang dalam proses maintenance untuk peningkatan performa dan stabilitas. Mohon tunggu update selanjutnya.\n\nTikTok:\nhttps://www.tiktok.com/@cortiezapp\n\nWhatsApp Channel:\nhttps://whatsapp.com/channel/0029Vb6ygqx9Bb5whdu1Wg2V"
     "html_enabled": true,
     "button_text": "OK"
   }
