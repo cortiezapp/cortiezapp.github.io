@@ -1,26 +1,25 @@
 {
-  "notifications": [
-    {
-      "id": 1001,
-      "hour": 8,
-      "minute": 0,
-      "title": "Optimalisasi Pagi",
-      "message": "Aktifkan Sensix untuk memastikan responsivitas dan performa perangkat yang maksimal hari ini."
-    },
-    {
-      "id": 1002,
-      "hour": 13,
-      "minute": 0,
-      "title": "Stabilitas Sistem",
-      "message": "Pastikan presisi dan stabilitas kontrol tetap terjaga untuk pengalaman penggunaan yang konsisten."
-    },
-    {
-      "id": 1003,
-      "hour": 2,
-      "minute": 16,
-      "title": "Performa Kompetitif",
-      "message": "Optimalkan konfigurasi Sensix sekarang untuk mencapai performa puncak pada sesi malam ini."
-    }
-  ]
-}
+  "meta": {
+    "version": "1.0.0",
+    "updated": "2025-01-05",
+    "description": "Daily smart reminder from CortiezSensiX"
+  },
 
+  "times": [
+    "10:25",
+    "11:00",
+    "18:30"
+  ],
+
+  "messages": [
+    "Sensi belum enak? Coba preset CortiezSensiX 🔥",
+    "Main FF makin stabil dengan CortiezSensiX 🎯",
+    "Sudah update sensi hari ini?"
+  ],
+
+  "behavior": {
+    "random_message": false,
+    "rotate_messages": true,
+    "max_messages_per_day": 2
+  }
+}
