@@ -1,28 +1,28 @@
 {
   "meta": {
     "version": "1.1",
-    "description": "Daily notification schedule and 10 random reminder messages for SensiTools Pro",
+    "description": "Daily notification schedule and 10 random reminder messages for CortiezSensiX Pro",
     "updated": "2025-09-11"
   },
   "times": [
     "10:00",
     "13:30",
     "17:00",
-    "18:00",
-    "18:30"
+    "19:30",
+    "21:00"
   ],
   "messages": [
-  "🔥 CortiezSensix siap meningkatkan performa game kamu!",
-  "⚡ Nikmati sensitivity yang halus dan responsif!",
-  "🎯 Waktunya tingkatkan akurasi dengan CortiezSensix!",
-  "🚀 Mode game aktif, rasakan perbedaannya sekarang!",
-  "💎 Sensitivity optimal untuk FF dan FF Max!",
-  "🔥 Jangan lewatkan tips dan trik terbaru CortiezSensix!",
-  "🎮 Game lebih smooth, kontrol lebih presisi!",
-  "⚡ Upgrade skill kamu dengan pengaturan Sensix!",
-  "✨ Rasakan pengalaman gaming anti lag!",
-  "🏆 Jadi juara dengan bantuan CortiezSensix!"
-],
+    "🔥 CortiezSensix siap meningkatkan performa game kamu!",
+    "⚡ Nikmati sensitivity yang halus dan responsif!",
+    "🎯 Waktunya tingkatkan akurasi dengan CortiezSensix!",
+    "🚀 Mode game aktif, rasakan perbedaannya sekarang!",
+    "💎 Sensitivity optimal untuk FF dan FF Max!",
+    "🔥 Jangan lewatkan tips dan trik terbaru CortiezSensix!",
+    "🎮 Game lebih smooth, kontrol lebih presisi!",
+    "⚡ Upgrade skill kamu dengan pengaturan Sensix!",
+    "✨ Rasakan pengalaman gaming anti lag!",
+    "🏆 Jadi juara dengan bantuan CortiezSensix!"
+  ],
   "behavior": {
     "random_message": true,
     "max_messages_per_day": 3,
