@@ -1,27 +1,31 @@
 {
   "meta": {
-    "version": "1.0.0",
-    "updated": "2025-01-05",
-    "description": "Daily smart reminder from CortiezSensiX"
+    "version": "1.1",
+    "description": "Daily notification schedule and 10 random reminder messages for SensiTools Pro",
+    "updated": "2025-09-11"
   },
-
   "times": [
-    "11:35",
-    "11:40",
-    "11:45",
-    "11:50",
-    "11:55"
+    "10:00",
+    "13:30",
+    "17:00",
+    "19:30",
+    "21:00"
   ],
-
   "messages": [
-    "Sensi belum enak? Coba preset CortiezSensiX 🔥",
-    "Main FF makin stabil dengan CortiezSensiX 🎯",
-    "Sudah update sensi hari ini?"
+    "Boost your gameplay! Optimize RAM now with SensiTools Pro.",
+    "Try Pro Sensitivity Control — smoother aim across all playstyles.",
+    "Device slowing down? Free up memory for better performance.",
+    "Enable FPS Monitor to track real-time game stability.",
+    "New tip: adjust Aim FOV for wider and more comfortable targeting.",
+    "Stay focused — enable Disable Notification for distraction-free gaming.",
+    "Check Graphics Quality settings for smoother visuals.",
+    "Network lag? Use Ping Stabilizer for a more stable connection.",
+    "Crosshair overlay is ready — sharpen your aim anytime.",
+    "Don’t forget to apply FPS Mode for maximum 60 FPS experience!"
   ],
-
   "behavior": {
-    "random_message": false,
-    "rotate_messages": true,
-    "max_messages_per_day": 5
+    "random_message": true,
+    "max_messages_per_day": 3,
+    "rotate_messages": true
   }
 }
