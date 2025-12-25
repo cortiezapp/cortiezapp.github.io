@@ -4,12 +4,16 @@
     "mandatory": true,
     "download_url": "https://cortiezapp.github.io/",
     "changelog": [
-  "Fix bugs",
-  "Performance boost",
   "Fix bug monitoring CPU",
-  "Fix bug Crosshair",
+  "Fix bug Custom Crosshair",
   "Fix bug move crosshair",
-  "More stable version"
+  "More stable version",
+  "NEW FEATURE: Touch & Speed Optimization",
+  "NEW FEATURE: Super Fast UI (No Lag)",
+  "NEW FEATURE: Extreme Gaming Mode",
+  "NEW FEATURE: Swipe Responsivity Levels",
+  "NEW FEATURE: Battery & Display Tweak",
+  "NEW FEATURE: Precision AIM SensiXHead [Pro Version]"
 ],
     "update_title": "Update Available!",
     "update_message": "New version brings improvements",
@@ -18,9 +22,9 @@
   },
   
   "info_dialog": {
-    "show_on_start": false,
-    "title": "Maintenance Selesai",
-    "message": "\nMaintenance telah selesai. Aplikasi kini dapat digunakan kembali dengan performa dan stabilitas yang lebih baik.\n\nTerima kasih atas kesabaran Anda.\n\nTikTok:\nhttps://www.tiktok.com/@cortiezapp\n\nWhatsApp Channel:\nhttps://whatsapp.com/channel/0029Vb6ygqx9Bb5whdu1Wg2V",
+    "show_on_start": true,
+    "title": "Informasi",
+  "message": "🎮 **CALL FOR GAMEPLAY REVIEW** 🎮\n\nHai gamers Cortiez! \nAdmin mengajak kalian untuk membuat dan mengirimkan video review gameplay menggunakan **Cortiez SensiX V1.3**.\n\n📋 **Persyaratan Video Review:**\n1. Gunakan **screen recorder** yang jelas\n2. **WAJIB tampilkan Monitoring Cortiez** dalam gameplay\n3. **WAJIB aktifkan Crosshair CortiezSensix** selama rekaman\n4. Minimal durasi: 30 detik\n5. Tampilkan performa smooth dan fitur baru\n\n📤 **Kirim hasil rekaman ke Group WhatsApp:**\nhttps://chat.whatsapp.com/H01IcOVnL2WLXuHBE6AqWP\n\n🎁 **Video terbaik akan mendapat apresiasi khusus!**\n\n📢 **Jangan lupa follow update kami di:**\n• TikTok: https://www.tiktok.com/@cortiezapp\n• WhatsApp Channel: https://whatsapp.com/channel/0029Vb6ygqx9Bb5whdu1Wg2V\n\n🔥 **Fitur baru V1.3 sudah LIVE!**\nRasakan pengalaman gaming yang lebih smooth, responsif, dan presisi! 🚀",
     "html_enabled": true,
     "button_text": "OK"
   }
