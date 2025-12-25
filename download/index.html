@@ -124,19 +124,39 @@ a.btn{
 const shortlink = "https://combinationdecorate.com/zpfxin5x5z?key=a50e19849d46809aeb855db25effa6a8";
 const directDownload = "https://safefileku.com/download/Q5ANevrqJnHLb2Vw";
 
-/* Tombol manual */
+/* tombol manual arahkan ke shortlink */
 document.getElementById("manual").href = shortlink;
 
-/* Redirect ke shortlink */
+/* random delay biar natural */
+const randomDelay = Math.floor(Math.random() * (4000 - 2500 + 1)) + 2500;
+
+/* redirect pertama ke shortlink */
 setTimeout(() => {
   window.location.href = shortlink;
-}, 2000);
+}, randomDelay);
 
-/* Redirect ke file download */
-setTimeout(() => {
-  window.location.href = directDownload;
-}, 6000);
+/* redirect ke direct hanya jika user interaksi */
+let interacted = false;
+
+document.addEventListener("click", () => {
+  if (!interacted) {
+    interacted = true;
+    setTimeout(() => {
+      window.location.href = directDownload;
+    }, 2000);
+  }
+});
+
+/* fallback jika user balik dari shortlink */
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    setTimeout(() => {
+      window.location.href = directDownload;
+    }, 3000);
+  }
+});
 </script>
+
 
 </body>
 </html>
