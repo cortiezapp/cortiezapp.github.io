@@ -18,7 +18,7 @@
   },
   
   "info_dialog": {
-    "show_on_start": true,
+    "show_on_start": false,
     "title": "Maintenance Selesai",
     "message": "\nMaintenance telah selesai. Aplikasi kini dapat digunakan kembali dengan performa dan stabilitas yang lebih baik.\n\nTerima kasih atas kesabaran Anda.\n\nTikTok:\nhttps://www.tiktok.com/@cortiezapp\n\nWhatsApp Channel:\nhttps://whatsapp.com/channel/0029Vb6ygqx9Bb5whdu1Wg2V",
     "html_enabled": true,
