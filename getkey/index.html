@@ -1,148 +1,203 @@
 <style>
-  :root {
-    --text-color: #ffffff;
-    --box-bg: #1a1a1a;
-    --slider-bg: #e0e0e0;
-    --slider-button: #ffa500;
-    --result-success: #008000;
-    --btn-text: #ffffff;
-    --dialog-bg: #1a1a1a;
-  }
+/* ================= FONT ================= */
+@font-face {
+  font-family: "GFFLatin";
+  src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Thin.woff2") format("woff2");
+  font-weight: 100;
+}
+@font-face {
+  font-family: "GFFLatin";
+  src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "GFFLatin";
+  src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Medium.woff2") format("woff2");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "GFFLatin";
+  src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Bold.woff2") format("woff2");
+  font-weight: 700;
+}
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg-color: #1a1a1a;
-      --text-color: #ffa500;
-      --box-bg: #1e1e1e;
-      --slider-bg: #2c2c2c;
-      --slider-button: #ffa500;
-      --result-success: #00e676;
-      --btn-text: #000;
-      --dialog-bg: #1e1e1e;
-    }
-  }
+/* ================= ROOT BASE (STYLE ATAS) ================= */
+:root {
+  --bg-color: #0f1724;
+  --card-bg: rgba(255,255,255,.04);
+  --border-soft: rgba(255,255,255,.08);
+  --text-color: #e6eef6;
+  --muted: #9aa4b2;
+  --accent: #38bdf8;
+  --accent2: #7c3aed;
+  --success: #00e676;
 
-  body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    padding: 20px;
-  }
+  --slider-bg: rgba(255,255,255,0.12);
+  --slider-button: linear-gradient(90deg, var(--accent), var(--accent2));
 
-  .container {
-    max-width: 480px;
-    margin: auto;
-    background-color: var(--box-bg);
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    text-align: center;
-  }
+  font-family: "GFFLatin", sans-serif;
+}
 
-  .slide-to-unlock {
-    position: relative;
-    width: 100%;
-    height: 50px;
-    background: var(--slider-bg);
-    border-radius: 30px;
-    overflow: hidden;
-    margin: 30px auto;
-    box-shadow: inset 0 0 10px rgba(255,165,0,0.2);
-    user-select: none;
-    touch-action: pan-x;
-  }
+/* ================= BODY ================= */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg,#071022,#081228);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: "GFFLatin", sans-serif;
+}
 
-  .slide-track {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    color: #aaa;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 500;
-    font-size: 14px;
-    pointer-events: none;
-    z-index: 1;
-  }
+/* ================= CONTAINER ================= */
+.container {
+  max-width: 420px;
+  width: 100%;
+  background: var(--card-bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.5);
+  text-align: center;
+  animation: fade .5s ease-out;
+}
 
-  .slider-button {
-    position: absolute;
-    height: 100%;
-    width: 50px;
-    background: var(--slider-button);
-    border-radius: 50%;
-    cursor: grab;
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    font-weight: bold;
-    left: 0;
-    transition: background 0.3s;
-    user-select: none;
-    touch-action: none;
-  }
+@keyframes fade {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
 
-  #result {
-    display: none;
-    margin-top: 10px;
-    font-weight: bold;
-    color: var(--result-success);
-  }
+.container h1 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 500;
+}
 
-  .btn-action {
-    background: var(--slider-button);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    margin-top: 10px;
-    font-weight: bold;
-  }
+.container p {
+  font-size: 14px;
+  color: var(--muted);
+}
 
-  #btnCopy {
-    display: none;
-  }
+/* ================= SLIDER ================= */
+.slide-to-unlock {
+  position: relative;
+  width: 100%;
+  height: 52px;
+  background: var(--slider-bg);
+  border-radius: 30px;
+  overflow: hidden;
+  margin: 30px auto;
+  box-shadow: inset 0 0 12px rgba(0,0,0,.4);
+  user-select: none;
+  touch-action: pan-x;
+}
 
-  #countdown {
-    display: none;
-    margin-top: 10px;
-    color: #aaa;
-  }
+.slide-track {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  color: var(--muted);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  pointer-events: none;
+}
 
-  #dialog {
-    display: none;
-    position: fixed;
-    z-index: 99;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
-    align-items: center;
-    justify-content: center;
-  }
+.slider-button {
+  position: absolute;
+  height: 100%;
+  width: 52px;
+  background: var(--slider-button);
+  border-radius: 50%;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #012;
+  font-weight: 700;
+  left: 0;
+  z-index: 2;
+  transition: background .3s;
+  user-select: none;
+  touch-action: none;
+}
 
-  .box {
-    background: var(--dialog-bg);
-    color: var(--text-color);
-    padding: 20px;
-    border-radius: 12px;
-    max-width: 400px;
-    width: 90%;
-    text-align: center;
-  }
+/* ================= RESULT ================= */
+#result {
+  display: none;
+  margin-top: 10px;
+  font-weight: 500;
+  color: var(--success);
+}
 
-  .close {
-    float: right;
-    font-size: 22px;
-    cursor: pointer;
-    color: var(--text-color);
-  }
+/* ================= BUTTON ================= */
+.btn-action {
+  margin-top: 14px;
+  padding: 12px 22px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  color: #012;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: opacity .3s;
+}
 
-  @media (max-width: 500px) {
-    .container { padding: 15px; }
-    .slider-button { width: 45px; }
-  }
+.btn-action:hover {
+  opacity: .85;
+}
+
+#btnCopy {
+  display: none;
+}
+
+#countdown {
+  display: none;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ================= DIALOG ================= */
+#dialog {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.8);
+  z-index: 99;
+  align-items: center;
+  justify-content: center;
+}
+
+.box {
+  background: var(--card-bg);
+  border: 1px solid var(--border-soft);
+  padding: 22px;
+  border-radius: 16px;
+  max-width: 360px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,.6);
+}
+
+.close {
+  float: right;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 500px) {
+  .container { padding: 18px; }
+  .slider-button { width: 48px; }
+}
 </style>
+
 
 <div class="container">
   <h1>Cortiez<span style="color:#ffa500">SensiX</span></h1>
