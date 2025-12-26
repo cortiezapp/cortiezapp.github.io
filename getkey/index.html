@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generate Key</title>
+<style>
+    body { font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #f0f0f0; }
+    .container { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; }
+    button { padding: 10px 20px; font-size: 16px; border: none; border-radius: 8px; background: #6200EE; color: #fff; cursor: pointer; margin-top: 12px; }
+    input { width: 100%; padding: 10px; margin-top: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Generate Key</h2>
+    <p>Key Anda akan dibuat otomatis berdasarkan Device ID</p>
+    <input type="text" id="deviceId" readonly />
+    <input type="text" id="generatedKey" readonly placeholder="Key akan muncul di sini" />
+    <button id="btnCopy">Copy Key</button>
+</div>
+
+<script>
+    function getParam(name) {
+        const url = new URL(window.location.href);
+        return url.searchParams.get(name);
+    }
+
+    const deviceId = getParam("key") || "";
+    document.getElementById("deviceId").value = deviceId;
+
+    // Simple key generator (bisa diganti dengan algoritma lebih kompleks di server)
+    function generateKey(id) {
+        // Contoh: hash sederhana (base36)
+        let hash = 0;
+        for(let i=0; i<id.length; i++){
+            hash = ((hash << 5) - hash) + id.charCodeAt(i);
+            hash |= 0; // convert to 32bit integer
+        }
+        return Math.abs(hash).toString(36).toUpperCase();
+    }
+
+    const key = generateKey(deviceId);
+    document.getElementById("generatedKey").value = key;
+
+    // Copy button
+    document.getElementById("btnCopy").onclick = () => {
+        const input = document.getElementById("generatedKey");
+        input.select();
+        input.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(input.value)
+            .then(() => alert("Key berhasil dicopy!"));
+    };
+</script>
+</body>
+</html>
