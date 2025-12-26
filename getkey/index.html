@@ -1,56 +1,227 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>CortiezSensiX - Get Key</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Generate Key</title>
+
 <style>
-    body { font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #f0f0f0; }
-    .container { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; }
-    button { padding: 10px 20px; font-size: 16px; border: none; border-radius: 8px; background: #6200EE; color: #fff; cursor: pointer; margin-top: 12px; }
-    input { width: 100%; padding: 10px; margin-top: 12px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; }
+:root {
+  --bg:#121212;
+  --box:#1e1e1e;
+  --text:#ffa500;
+  --slider:#2c2c2c;
+  --btn:#ffa500;
+  --success:#00e676;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:sans-serif;
+  padding:20px;
+}
+
+.container{
+  max-width:480px;
+  margin:auto;
+  background:var(--box);
+  border-radius:14px;
+  padding:20px;
+  text-align:center;
+  box-shadow:0 0 20px rgba(0,0,0,.4);
+}
+
+.slide-to-unlock{
+  position:relative;
+  width:100%;
+  height:50px;
+  background:var(--slider);
+  border-radius:30px;
+  overflow:hidden;
+  margin:30px auto;
+  user-select:none;
+}
+
+.slide-track{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#aaa;
+  font-size:14px;
+}
+
+.slider-button{
+  position:absolute;
+  width:50px;
+  height:100%;
+  background:var(--btn);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#000;
+  font-weight:bold;
+  cursor:grab;
+  left:0;
+  z-index:2;
+}
+
+#result{
+  display:none;
+  margin-top:10px;
+  color:var(--success);
+  font-weight:bold;
+}
+
+.btn-action{
+  background:var(--btn);
+  border:none;
+  border-radius:30px;
+  padding:10px 20px;
+  margin-top:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+#btnCopy{ display:none; }
+
+#dialog{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  align-items:center;
+  justify-content:center;
+}
+
+.box{
+  background:var(--box);
+  padding:20px;
+  border-radius:12px;
+  width:90%;
+  max-width:380px;
+  text-align:center;
+}
+
+.close{
+  float:right;
+  cursor:pointer;
+  font-size:20px;
+}
 </style>
 </head>
+
 <body>
+
 <div class="container">
-    <h2>Generate Key</h2>
-    <p>Key Anda akan dibuat otomatis berdasarkan Device ID</p>
-    <input type="text" id="deviceId" readonly />
-    <input type="text" id="generatedKey" readonly placeholder="Key akan muncul di sini" />
-    <button id="btnCopy">Copy Key</button>
+  <h1>Cortiez<span style="color:#fff">SensiX</span></h1>
+  <p>Slide to generate your daily access key</p>
+
+  <div class="slide-to-unlock" id="slider">
+    <div class="slide-track">Slide to get key</div>
+    <div class="slider-button" id="sliderBtn">➤</div>
+  </div>
+
+  <div id="result">Key generated successfully</div>
+
+  <div id="btnCopy">
+    <button class="btn-action" onclick="copyKey()">Copy Key</button>
+  </div>
+</div>
+
+<div id="dialog">
+  <div class="box">
+    <span class="close" onclick="dialog.style.display='none'">&times;</span>
+    <h3>Key Copied</h3>
+    <p style="word-break:break-all;font-weight:bold">
+      <span id="showKey"></span>
+    </p>
+
+    <a class="btn-action"
+       href="intent://open#Intent;scheme=myapp;package=com.ic.cortiez;end">
+       Open CortiezSensiX
+    </a>
+  </div>
 </div>
 
 <script>
-    function getParam(name) {
-        const url = new URL(window.location.href);
-        return url.searchParams.get(name);
+let generatedKey = "";
+let ready = false;
+
+async function sha256(str){
+  const buf = new TextEncoder().encode(str);
+  const hash = await crypto.subtle.digest("SHA-256", buf);
+  const arr = Array.from(new Uint8Array(hash));
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789@#$";
+  return arr.slice(0,10).map(b=>chars[b%chars.length]).join("");
+}
+
+function generateKey(){
+  const p = new URLSearchParams(location.search);
+  const pkg = p.get("packageName");
+  if(!pkg) return;
+
+  const admin = "CortiezAdmin";
+  const d = new Date();
+  const time =
+    d.getFullYear() +
+    String(d.getMonth()+1).padStart(2,'0') +
+    String(d.getDate()).padStart(2,'0') +
+    String(d.getHours()).padStart(2,'0');
+
+  sha256(admin + pkg + time).then(k=>{
+    generatedKey = k;
+    ready = true;
+  });
+}
+
+function copyKey(){
+  navigator.clipboard.writeText(generatedKey).then(()=>{
+    showKey.innerText = generatedKey;
+    dialog.style.display = "flex";
+  });>
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  generateKey();
+
+  const slider = document.getElementById("slider");
+  const btn = document.getElementById("sliderBtn");
+  const max = slider.offsetWidth - btn.offsetWidth;
+
+  let drag=false,start=0;
+
+  btn.onmousedown = e => { drag=true; start=e.clientX; };
+  document.onmousemove = e => {
+    if(!drag) return;
+    let x = Math.min(max, Math.max(0, e.clientX-start));
+    btn.style.left = x+"px";
+    if(x>=max && ready){
+      btn.style.background="#00e676";
+      result.style.display="block";
+      btnCopy.style.display="block";
     }
+  };
+  document.onmouseup = ()=>{ drag=false; if(btn.offsetLeft<max) btn.style.left="0"; };
 
-    const deviceId = getParam("key") || "";
-    document.getElementById("deviceId").value = deviceId;
-
-    // Simple key generator (bisa diganti dengan algoritma lebih kompleks di server)
-    function generateKey(id) {
-        // Contoh: hash sederhana (base36)
-        let hash = 0;
-        for(let i=0; i<id.length; i++){
-            hash = ((hash << 5) - hash) + id.charCodeAt(i);
-            hash |= 0; // convert to 32bit integer
-        }
-        return Math.abs(hash).toString(36).toUpperCase();
+  btn.ontouchstart = e => { drag=true; start=e.touches[0].clientX; };
+  document.ontouchmove = e => {
+    if(!drag) return;
+    let x = Math.min(max, Math.max(0, e.touches[0].clientX-start));
+    btn.style.left = x+"px";
+    if(x>=max && ready){
+      btn.style.background="#00e676";
+      result.style.display="block";
+      btnCopy.style.display="block";
     }
-
-    const key = generateKey(deviceId);
-    document.getElementById("generatedKey").value = key;
-
-    // Copy button
-    document.getElementById("btnCopy").onclick = () => {
-        const input = document.getElementById("generatedKey");
-        input.select();
-        input.setSelectionRange(0, 99999);
-        navigator.clipboard.writeText(input.value)
-            .then(() => alert("Key berhasil dicopy!"));
-    };
+  };
+  document.ontouchend = ()=>{ drag=false; if(btn.offsetLeft<max) btn.style.left="0"; };
+});
 </script>
+
 </body>
 </html>
