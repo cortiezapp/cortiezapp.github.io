@@ -21,47 +21,44 @@
   font-weight: 700;
 }
 
-/* ================= ROOT BASE (STYLE ATAS) ================= */
+@media (max-width: 520px) {
+
 :root {
-  --bg-color: #0f1724;
-  --card-bg: rgba(255,255,255,.04);
-  --border-soft: rgba(255,255,255,.08);
-  --text-color: #e6eef6;
+  --bg: #0f1724;
+  --card: rgba(255,255,255,.04);
+  --border: rgba(255,255,255,.08);
+  --text: #e6eef6;
   --muted: #9aa4b2;
   --accent: #38bdf8;
   --accent2: #7c3aed;
   --success: #00e676;
-
-  --slider-bg: rgba(255,255,255,0.12);
-  --slider-button: linear-gradient(90deg, var(--accent), var(--accent2));
-
   font-family: "GFFLatin", sans-serif;
 }
 
-/* ================= BODY ================= */
+/* BODY */
 body {
   margin: 0;
   min-height: 100vh;
   background: linear-gradient(180deg,#071022,#081228);
-  color: var(--text-color);
+  color: var(--text);
+  padding: 16px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 20px;
+  justify-content: center;
   font-family: "GFFLatin", sans-serif;
 }
 
-/* ================= CONTAINER ================= */
+/* CONTAINER */
 .container {
-  max-width: 420px;
   width: 100%;
-  background: var(--card-bg);
-  border: 1px solid var(--border-soft);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.5);
+  max-width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px 18px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.55);
   text-align: center;
-  animation: fade .5s ease-out;
+  animation: fade .4s ease-out;
 }
 
 @keyframes fade {
@@ -70,85 +67,76 @@ body {
 }
 
 .container h1 {
-  margin: 0 0 8px;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 500;
+  margin-bottom: 6px;
 }
 
 .container p {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--muted);
 }
 
-/* ================= SLIDER ================= */
+/* SLIDER */
 .slide-to-unlock {
-  position: relative;
   width: 100%;
-  height: 52px;
-  background: var(--slider-bg);
+  height: 50px;
+  background: rgba(255,255,255,.12);
   border-radius: 30px;
+  margin: 26px auto;
+  position: relative;
   overflow: hidden;
-  margin: 30px auto;
   box-shadow: inset 0 0 12px rgba(0,0,0,.4);
-  user-select: none;
-  touch-action: pan-x;
 }
 
 .slide-track {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  color: var(--muted);
+  inset: 0;
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 14px;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--muted);
   font-weight: 500;
   pointer-events: none;
 }
 
 .slider-button {
   position: absolute;
+  left: 0;
+  top: 0;
+  width: 50px;
   height: 100%;
-  width: 52px;
-  background: var(--slider-button);
   border-radius: 50%;
-  cursor: grab;
+  background: linear-gradient(90deg,var(--accent),var(--accent2));
+  color: #012;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #012;
-  font-weight: 700;
-  left: 0;
-  z-index: 2;
-  transition: background .3s;
+  cursor: grab;
   user-select: none;
-  touch-action: none;
 }
 
-/* ================= RESULT ================= */
+/* RESULT */
 #result {
   display: none;
-  margin-top: 10px;
+  margin-top: 8px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--success);
 }
 
-/* ================= BUTTON ================= */
+/* BUTTON */
 .btn-action {
   margin-top: 14px;
   padding: 12px 22px;
   border-radius: 30px;
   border: none;
-  cursor: pointer;
   font-weight: 700;
+  background: linear-gradient(90deg,var(--accent),var(--accent2));
   color: #012;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  transition: opacity .3s;
-}
-
-.btn-action:hover {
-  opacity: .85;
+  cursor: pointer;
 }
 
 #btnCopy {
@@ -157,46 +145,46 @@ body {
 
 #countdown {
   display: none;
-  margin-top: 10px;
-  font-size: 13px;
+  font-size: 12px;
+  margin-top: 8px;
   color: var(--muted);
 }
 
-/* ================= DIALOG ================= */
+/* DIALOG */
 #dialog {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.8);
+  background: rgba(0,0,0,.85);
   z-index: 99;
   align-items: center;
   justify-content: center;
 }
 
 .box {
-  background: var(--card-bg);
-  border: 1px solid var(--border-soft);
-  padding: 22px;
-  border-radius: 16px;
-  max-width: 360px;
   width: 90%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,.6);
+  box-shadow: 0 10px 28px rgba(0,0,0,.6);
 }
 
 .close {
   float: right;
   font-size: 22px;
-  cursor: pointer;
   color: var(--muted);
 }
 
+} /* END MOBILE */
 /* ================= RESPONSIVE ================= */
 @media (max-width: 500px) {
   .container { padding: 18px; }
   .slider-button { width: 48px; }
 }
 </style>
+
 
 
 <div class="container">
