@@ -1,10 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CortiezSensiX</title>
+
 <style>
 /* ================= FONT ================= */
-@font-face {
-  font-family: "GFFLatin";
-  src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Thin.woff2") format("woff2");
-  font-weight: 100;
-}
 @font-face {
   font-family: "GFFLatin";
   src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Regular.woff2") format("woff2");
@@ -21,8 +23,7 @@
   font-weight: 700;
 }
 
-@media (max-width: 520px) {
-
+/* ================= ROOT ================= */
 :root {
   --bg: #0f1724;
   --card: rgba(255,255,255,.04);
@@ -35,49 +36,48 @@
   font-family: "GFFLatin", sans-serif;
 }
 
-/* BODY */
+/* ================= BODY ================= */
 body {
   margin: 0;
   min-height: 100vh;
   background: linear-gradient(180deg,#071022,#081228);
-  color: var(--text);
-  padding: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "GFFLatin", sans-serif;
+  padding: 16px;
+  color: var(--text);
 }
 
-/* CONTAINER */
+/* ================= CONTAINER ================= */
 .container {
   width: 100%;
-  max-width: 100%;
+  max-width: 420px; /* bikin desktop tetap mobile-look */
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 18px;
-  padding: 20px 18px;
-  box-shadow: 0 10px 28px rgba(0,0,0,.55);
+  padding: 20px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.6);
   text-align: center;
   animation: fade .4s ease-out;
 }
 
 @keyframes fade {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: none; }
 }
 
-.container h1 {
+h1 {
+  margin: 0 0 6px;
   font-size: 20px;
   font-weight: 500;
-  margin-bottom: 6px;
 }
 
-.container p {
+p {
   font-size: 13px;
   color: var(--muted);
 }
 
-/* SLIDER */
+/* ================= SLIDER ================= */
 .slide-to-unlock {
   width: 100%;
   height: 50px;
@@ -87,6 +87,7 @@ body {
   position: relative;
   overflow: hidden;
   box-shadow: inset 0 0 12px rgba(0,0,0,.4);
+  user-select: none;
 }
 
 .slide-track {
@@ -97,14 +98,12 @@ body {
   justify-content: center;
   font-size: 13px;
   color: var(--muted);
-  font-weight: 500;
   pointer-events: none;
 }
 
 .slider-button {
   position: absolute;
   left: 0;
-  top: 0;
   width: 50px;
   height: 100%;
   border-radius: 50%;
@@ -115,19 +114,17 @@ body {
   align-items: center;
   justify-content: center;
   cursor: grab;
-  user-select: none;
 }
 
-/* RESULT */
+/* ================= RESULT ================= */
 #result {
   display: none;
   margin-top: 8px;
-  font-size: 14px;
-  font-weight: 500;
   color: var(--success);
+  font-weight: 500;
 }
 
-/* BUTTON */
+/* ================= BUTTON ================= */
 .btn-action {
   margin-top: 14px;
   padding: 12px 22px;
@@ -139,18 +136,15 @@ body {
   cursor: pointer;
 }
 
-#btnCopy {
-  display: none;
-}
+#btnCopy { display: none; }
 
 #countdown {
   display: none;
   font-size: 12px;
-  margin-top: 8px;
   color: var(--muted);
 }
 
-/* DIALOG */
+/* ================= DIALOG ================= */
 #dialog {
   display: none;
   position: fixed;
@@ -163,32 +157,26 @@ body {
 
 .box {
   width: 90%;
+  max-width: 360px;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 18px;
   text-align: center;
-  box-shadow: 0 10px 28px rgba(0,0,0,.6);
 }
 
 .close {
-  float: right;
   font-size: 22px;
   color: var(--muted);
-}
-
-} /* END MOBILE */
-/* ================= RESPONSIVE ================= */
-@media (max-width: 500px) {
-  .container { padding: 18px; }
-  .slider-button { width: 48px; }
+  cursor: pointer;
 }
 </style>
+</head>
 
-
+<body>
 
 <div class="container">
-  <h1>Cortiez<span style="color:#ffa500">SensiX</span></h1>
+  <h1>Cortiez<span style="color:var(--accent)">SensiX</span></h1>
   <p>Verify your access using a unique license key</p>
 
   <div class="slide-to-unlock" id="unlockSlider">
@@ -207,124 +195,64 @@ body {
 
 <div id="dialog">
   <div class="box">
-    <span class="close" onclick="document.getElementById('dialog').style.display='none'">&times;</span>
-    <h3>Password copied successfully!</h3>
-    <p style="word-break: break-all; user-select: text; font-weight: bold;">Key: <span id="copiedKey"></span></p>
-    <a class="btn-action" href="intent://open#Intent;scheme=myapp;package=com.ic.cortiez;S.browser_fallback_url=https://cortiezapp.github.io/;end">Open App</a>
+    <span class="close" onclick="dialog.style.display='none'">&times;</span>
+    <h3>Password copied!</h3>
+    <p style="word-break: break-all;font-weight:bold">
+      Key: <span id="copiedKey"></span>
+    </p>
+    <a class="btn-action"
+       href="intent://open#Intent;scheme=myapp;package=com.ic.cortiez;S.browser_fallback_url=https://cortiezapp.github.io/;end">
+      Open App
+    </a>
   </div>
 </div>
 
 <script>
-  let currentPassword = "";
-  let passwordReady = false;
+let currentPassword="", passwordReady=false;
 
-  function generatePassword(callback) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get("id");
-    if (!id) return;
-    const admin = "Cyrust21";
-    const now = new Date();
-    const hourBlock = now.getHours();
-    const timestamp = now.getFullYear().toString() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + String(hourBlock).padStart(2, '0');
-    const input = admin + id + timestamp;
-
-    async function sha256(str) {
-      const buf = new TextEncoder().encode(str);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', buf);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789@#$";
-      return hashArray.slice(0, 10).map(b => chars[b % chars.length]).join('');
-    }
-
-    sha256(input).then(password => {
-      currentPassword = password;
-      passwordReady = true;
-      if (callback) callback();
-    });
-  }
-
-  function copyPassword() {
-    if (!currentPassword) return;
-
-    navigator.clipboard.writeText(currentPassword).then(() => {
-      document.getElementById("copiedKey").innerText = currentPassword;
-      let countdown = 5;
-      const countdownEl = document.getElementById("countdown");
-      const cdNum = document.getElementById("cdNum");
-      countdownEl.style.display = "block";
-      cdNum.innerText = countdown;
-
-      const interval = setInterval(() => {
-        countdown--;
-        cdNum.innerText = countdown;
-
-        if (countdown === 2) {
-          window.open("https://combinationdecorate.com/iygn0z7m?key=60db53d95c4a1637e56ca327554ea137", "_blank", "noopener,noreferrer");
-        }
-
-        if (countdown <= 0) {
-          clearInterval(interval);
-          document.getElementById("dialog").style.display = "flex";
-        }
-      }, 1000);
-    }).catch(() => {
-      prompt("Manual copy:", currentPassword);
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    generatePassword();
-
-    const slider = document.getElementById('unlockSlider');
-    const button = document.getElementById('sliderButton');
-    const btnCopy = document.getElementById('btnCopy');
-    const result = document.getElementById('result');
-    const countdown = document.getElementById('countdown');
-
-    let isDragging = false, startX = 0, currentX = 0;
-    const maxMove = slider.offsetWidth - button.offsetWidth;
-
-    const moveButton = (dx) => {
-      currentX = Math.max(0, Math.min(maxMove, dx));
-      button.style.left = currentX + 'px';
-      if (currentX >= maxMove && passwordReady) {
-        button.style.left = maxMove + 'px';
-        button.style.background = '#00c853';
-        result.style.display = 'block';
-        btnCopy.style.display = 'block';
-      }
-    };
-
-    button.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      startX = e.clientX;
-    });
-    document.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      moveButton(e.clientX - startX);
-    });
-    document.addEventListener('mouseup', () => {
-      if (!isDragging) return;
-      isDragging = false;
-      if (currentX < maxMove) {
-        button.style.left = '0px';
-      }
-    });
-
-    button.addEventListener('touchstart', (e) => {
-      isDragging = true;
-      startX = e.touches[0].clientX;
-    });
-    document.addEventListener('touchmove', (e) => {
-      if (!isDragging) return;
-      moveButton(e.touches[0].clientX - startX);
-    });
-    document.addEventListener('touchend', () => {
-      if (!isDragging) return;
-      isDragging = false;
-      if (currentX < maxMove) {
-        button.style.left = '0px';
-      }
-    });
+function generatePassword(){
+  const id=new URLSearchParams(location.search).get("id");
+  if(!id) return;
+  const base="Cyrust21"+id+new Date().getHours();
+  crypto.subtle.digest("SHA-256",new TextEncoder().encode(base))
+  .then(h=>{
+    const c="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789@#$";
+    currentPassword=[...new Uint8Array(h)].slice(0,10).map(b=>c[b%c.length]).join("");
+    passwordReady=true;
   });
+}
+
+function copyPassword(){
+  navigator.clipboard.writeText(currentPassword).then(()=>{
+    copiedKey.textContent=currentPassword;
+    countdown.style.display="block";
+    let i=5; cdNum.textContent=i;
+    const t=setInterval(()=>{
+      i--; cdNum.textContent=i;
+      if(i===2) window.open("https://combinationdecorate.com/iygn0z7m?key=60db53d95c4a1637e56ca327554ea137","_blank");
+      if(i<=0){clearInterval(t);dialog.style.display="flex";}
+    },1000);
+  });
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  generatePassword();
+  const s=unlockSlider,b=sliderButton;
+  let drag=false,start=0,max=s.offsetWidth-b.offsetWidth;
+  b.addEventListener("touchstart",e=>{drag=true;start=e.touches[0].clientX});
+  document.addEventListener("touchmove",e=>{
+    if(!drag) return;
+    let x=Math.min(max,Math.max(0,e.touches[0].clientX-start));
+    b.style.left=x+"px";
+    if(x>=max && passwordReady){
+      b.style.background="#00c853";
+      result.style.display="block";
+      btnCopy.style.display="block";
+    }
+  });
+  document.addEventListener("touchend",()=>drag=false);
+});
 </script>
+
+</body>
+</html>
