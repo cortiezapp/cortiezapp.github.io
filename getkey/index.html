@@ -1,227 +1,287 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>CortiezSensiX - Get Key</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-:root {
-  --bg:#121212;
-  --box:#1e1e1e;
-  --text:#ffa500;
-  --slider:#2c2c2c;
-  --btn:#ffa500;
-  --success:#00e676;
-}
+  :root {
+    --text-color: #ffffff;
+    --box-bg: #1a1a1a;
+    --slider-bg: #e0e0e0;
+    --slider-button: #ffa500;
+    --result-success: #008000;
+    --btn-text: #ffffff;
+    --dialog-bg: #1a1a1a;
+  }
 
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:sans-serif;
-  padding:20px;
-}
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-color: #1a1a1a;
+      --text-color: #ffa500;
+      --box-bg: #1e1e1e;
+      --slider-bg: #2c2c2c;
+      --slider-button: #ffa500;
+      --result-success: #00e676;
+      --btn-text: #000;
+      --dialog-bg: #1e1e1e;
+    }
+  }
 
-.container{
-  max-width:480px;
-  margin:auto;
-  background:var(--box);
-  border-radius:14px;
-  padding:20px;
-  text-align:center;
-  box-shadow:0 0 20px rgba(0,0,0,.4);
-}
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 20px;
+  }
 
-.slide-to-unlock{
-  position:relative;
-  width:100%;
-  height:50px;
-  background:var(--slider);
-  border-radius:30px;
-  overflow:hidden;
-  margin:30px auto;
-  user-select:none;
-}
+  .container {
+    max-width: 480px;
+    margin: auto;
+    background-color: var(--box-bg);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    text-align: center;
+  }
 
-.slide-track{
-  position:absolute;
-  width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#aaa;
-  font-size:14px;
-}
+  .slide-to-unlock {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    background: var(--slider-bg);
+    border-radius: 30px;
+    overflow: hidden;
+    margin: 30px auto;
+    box-shadow: inset 0 0 10px rgba(255,165,0,0.2);
+    user-select: none;
+    touch-action: pan-x;
+  }
 
-.slider-button{
-  position:absolute;
-  width:50px;
-  height:100%;
-  background:var(--btn);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#000;
-  font-weight:bold;
-  cursor:grab;
-  left:0;
-  z-index:2;
-}
+  .slide-track {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    color: #aaa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 1;
+  }
 
-#result{
-  display:none;
-  margin-top:10px;
-  color:var(--success);
-  font-weight:bold;
-}
+  .slider-button {
+    position: absolute;
+    height: 100%;
+    width: 50px;
+    background: var(--slider-button);
+    border-radius: 50%;
+    cursor: grab;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: bold;
+    left: 0;
+    transition: background 0.3s;
+    user-select: none;
+    touch-action: none;
+  }
 
-.btn-action{
-  background:var(--btn);
-  border:none;
-  border-radius:30px;
-  padding:10px 20px;
-  margin-top:10px;
-  font-weight:bold;
-  cursor:pointer;
-}
+  #result {
+    display: none;
+    margin-top: 10px;
+    font-weight: bold;
+    color: var(--result-success);
+  }
 
-#btnCopy{ display:none; }
+  .btn-action {
+    background: var(--slider-button);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+  }
 
-#dialog{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  align-items:center;
-  justify-content:center;
-}
+  #btnCopy {
+    display: none;
+  }
 
-.box{
-  background:var(--box);
-  padding:20px;
-  border-radius:12px;
-  width:90%;
-  max-width:380px;
-  text-align:center;
-}
+  #countdown {
+    display: none;
+    margin-top: 10px;
+    color: #aaa;
+  }
 
-.close{
-  float:right;
-  cursor:pointer;
-  font-size:20px;
-}
+  #dialog {
+    display: none;
+    position: fixed;
+    z-index: 99;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .box {
+    background: var(--dialog-bg);
+    color: var(--text-color);
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+  }
+
+  .close {
+    float: right;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--text-color);
+  }
+
+  @media (max-width: 500px) {
+    .container { padding: 15px; }
+    .slider-button { width: 45px; }
+  }
 </style>
-</head>
-
-<body>
 
 <div class="container">
-  <h1>Cortiez<span style="color:#fff">SensiX</span></h1>
-  <p>Slide to generate your daily access key</p>
+  <h1>Cortiez<span style="color:#ffa500">SensiX</span></h1>
+  <p>Verify your access using a unique license key</p>
 
-  <div class="slide-to-unlock" id="slider">
-    <div class="slide-track">Slide to get key</div>
-    <div class="slider-button" id="sliderBtn">➤</div>
+  <div class="slide-to-unlock" id="unlockSlider">
+    <div class="slide-track">Slide to get your key</div>
+    <div class="slider-button" id="sliderButton">➤</div>
   </div>
 
-  <div id="result">Key generated successfully</div>
+  <div id="result">Password generated successfully!</div>
 
   <div id="btnCopy">
-    <button class="btn-action" onclick="copyKey()">Copy Key</button>
+    <button class="btn-action" onclick="copyPassword()">Copy Password</button>
   </div>
+
+  <div id="countdown">Please wait <span id="cdNum">5</span> seconds...</div>
 </div>
 
 <div id="dialog">
   <div class="box">
-    <span class="close" onclick="dialog.style.display='none'">&times;</span>
-    <h3>Key Copied</h3>
-    <p style="word-break:break-all;font-weight:bold">
-      <span id="showKey"></span>
-    </p>
-
-    <a class="btn-action"
-       href="intent://open#Intent;scheme=myapp;package=com.ic.cortiez;end">
-       Open CortiezSensiX
-    </a>
+    <span class="close" onclick="document.getElementById('dialog').style.display='none'">&times;</span>
+    <h3>Password copied successfully!</h3>
+    <p style="word-break: break-all; user-select: text; font-weight: bold;">Key: <span id="copiedKey"></span></p>
+    <a class="btn-action" href="intent://open#Intent;scheme=myapp;package=com.cyrust.fftools;S.browser_fallback_url=https://www.fftoolsproplus.com/;end">Open App</a>
   </div>
 </div>
 
 <script>
-let generatedKey = "";
-let ready = false;
+  let currentPassword = "";
+  let passwordReady = false;
 
-async function sha256(str){
-  const buf = new TextEncoder().encode(str);
-  const hash = await crypto.subtle.digest("SHA-256", buf);
-  const arr = Array.from(new Uint8Array(hash));
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789@#$";
-  return arr.slice(0,10).map(b=>chars[b%chars.length]).join("");
-}
+  function generatePassword(callback) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("id");
+    if (!id) return;
+    const admin = "Cyrust21";
+    const now = new Date();
+    const hourBlock = now.getHours();
+    const timestamp = now.getFullYear().toString() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0') + String(hourBlock).padStart(2, '0');
+    const input = admin + id + timestamp;
 
-function generateKey(){
-  const p = new URLSearchParams(location.search);
-  const pkg = p.get("packageName");
-  if(!pkg) return;
+    async function sha256(str) {
+      const buf = new TextEncoder().encode(str);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', buf);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789@#$";
+      return hashArray.slice(0, 10).map(b => chars[b % chars.length]).join('');
+    }
 
-  const admin = "CortiezAdmin";
-  const d = new Date();
-  const time =
-    d.getFullYear() +
-    String(d.getMonth()+1).padStart(2,'0') +
-    String(d.getDate()).padStart(2,'0') +
-    String(d.getHours()).padStart(2,'0');
+    sha256(input).then(password => {
+      currentPassword = password;
+      passwordReady = true;
+      if (callback) callback();
+    });
+  }
 
-  sha256(admin + pkg + time).then(k=>{
-    generatedKey = k;
-    ready = true;
+  function copyPassword() {
+    if (!currentPassword) return;
+
+    navigator.clipboard.writeText(currentPassword).then(() => {
+      document.getElementById("copiedKey").innerText = currentPassword;
+      let countdown = 5;
+      const countdownEl = document.getElementById("countdown");
+      const cdNum = document.getElementById("cdNum");
+      countdownEl.style.display = "block";
+      cdNum.innerText = countdown;
+
+      const interval = setInterval(() => {
+        countdown--;
+        cdNum.innerText = countdown;
+
+        if (countdown === 2) {
+          window.open("https://combinationdecorate.com/iygn0z7m?key=60db53d95c4a1637e56ca327554ea137", "_blank", "noopener,noreferrer");
+        }
+
+        if (countdown <= 0) {
+          clearInterval(interval);
+          document.getElementById("dialog").style.display = "flex";
+        }
+      }, 1000);
+    }).catch(() => {
+      prompt("Manual copy:", currentPassword);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    generatePassword();
+
+    const slider = document.getElementById('unlockSlider');
+    const button = document.getElementById('sliderButton');
+    const btnCopy = document.getElementById('btnCopy');
+    const result = document.getElementById('result');
+    const countdown = document.getElementById('countdown');
+
+    let isDragging = false, startX = 0, currentX = 0;
+    const maxMove = slider.offsetWidth - button.offsetWidth;
+
+    const moveButton = (dx) => {
+      currentX = Math.max(0, Math.min(maxMove, dx));
+      button.style.left = currentX + 'px';
+      if (currentX >= maxMove && passwordReady) {
+        button.style.left = maxMove + 'px';
+        button.style.background = '#00c853';
+        result.style.display = 'block';
+        btnCopy.style.display = 'block';
+      }
+    };
+
+    button.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+    });
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      moveButton(e.clientX - startX);
+    });
+    document.addEventListener('mouseup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      if (currentX < maxMove) {
+        button.style.left = '0px';
+      }
+    });
+
+    button.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+    });
+    document.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      moveButton(e.touches[0].clientX - startX);
+    });
+    document.addEventListener('touchend', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      if (currentX < maxMove) {
+        button.style.left = '0px';
+      }
+    });
   });
-}
-
-function copyKey(){
-  navigator.clipboard.writeText(generatedKey).then(()=>{
-    showKey.innerText = generatedKey;
-    dialog.style.display = "flex";
-  });>
-}
-
-document.addEventListener("DOMContentLoaded",()=>{
-  generateKey();
-
-  const slider = document.getElementById("slider");
-  const btn = document.getElementById("sliderBtn");
-  const max = slider.offsetWidth - btn.offsetWidth;
-
-  let drag=false,start=0;
-
-  btn.onmousedown = e => { drag=true; start=e.clientX; };
-  document.onmousemove = e => {
-    if(!drag) return;
-    let x = Math.min(max, Math.max(0, e.clientX-start));
-    btn.style.left = x+"px";
-    if(x>=max && ready){
-      btn.style.background="#00e676";
-      result.style.display="block";
-      btnCopy.style.display="block";
-    }
-  };
-  document.onmouseup = ()=>{ drag=false; if(btn.offsetLeft<max) btn.style.left="0"; };
-
-  btn.ontouchstart = e => { drag=true; start=e.touches[0].clientX; };
-  document.ontouchmove = e => {
-    if(!drag) return;
-    let x = Math.min(max, Math.max(0, e.touches[0].clientX-start));
-    btn.style.left = x+"px";
-    if(x>=max && ready){
-      btn.style.background="#00e676";
-      result.style.display="block";
-      btnCopy.style.display="block";
-    }
-  };
-  document.ontouchend = ()=>{ drag=false; if(btn.offsetLeft<max) btn.style.left="0"; };
-});
 </script>
-
-</body>
-</html>
