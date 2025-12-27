@@ -1,18 +1,10 @@
 {
   "update_info": {
-    "latest_version": "1.3",
+    "latest_version": "1.4",
     "mandatory": true,
     "download_url": "https://cortiezapp.github.io/",
     "changelog": [
-  "Fix bug Monitoring",
-  "Fix bug Custom Crosshair",
-  "More stable version",
-  "NEW FEATURE: Touch & Speed Optimization",
-  "NEW FEATURE: Super Fast UI (No Lag)",
-  "NEW FEATURE: Extreme Gaming Mode",
-  "NEW FEATURE: Swipe Responsivity Levels",
-  "NEW FEATURE: Battery & Display Tweak",
-  "NEW FEATURE: Precision AIM SensiXHead [Pro Version]"
+  "FIX LOGIN"
 ],
     "update_title": "Update Available! Gacor",
     "update_message": "New version brings improvements",
