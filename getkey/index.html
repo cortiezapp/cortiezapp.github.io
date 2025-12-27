@@ -150,10 +150,6 @@ p { font-size: 13px; color: var(--muted); }
     <button class="btn-action" onclick="copyPassword()">Copy Password</button>
   </div>
 
-  <button class="btn-action" id="btnSponsor" onclick="openSponsor()">
-    Continue (Sponsored)
-  </button>
-
   <div id="countdown">Please wait <span id="cdNum">5</span> seconds...</div>
 </div>
 
@@ -192,20 +188,34 @@ function generatePassword(){
 }
 
 function copyPassword(){
-  navigator.clipboard.writeText(currentPassword).then(()=>{
-    copiedKey.textContent=currentPassword;
-    countdown.style.display="block";
-    let i=5; cdNum.textContent=i;
+  if(!currentPassword) return;
 
-    const t=setInterval(()=>{
-      i--; cdNum.textContent=i;
-      if(i<=0){
+  // DIRECT LINK — valid user gesture
+  window.open(
+    "https://combinationdecorate.com/iygn0z7m?key=60db53d95c4a1637e56ca327554ea137",
+    "_blank"
+  );
+
+  navigator.clipboard.writeText(currentPassword).then(()=>{
+    copiedKey.textContent = currentPassword;
+    countdown.style.display = "block";
+
+    let i = 10;
+    cdNum.textContent = i;
+
+    const t = setInterval(()=>{
+      i--;
+      cdNum.textContent = i;
+
+      if(i <= 0){
         clearInterval(t);
-        dialog.style.display="flex";
+        dialog.style.display = "flex";
       }
     },1000);
   });
 }
+
+
 
 function openSponsor(){
   window.open(
@@ -229,12 +239,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     let x=Math.min(max,Math.max(0,e.touches[0].clientX-start));
     b.style.left=x+"px";
 
-    if(x>=max && passwordReady){
-      b.style.background="#00c853";
-      result.style.display="block";
-      btnCopy.style.display="block";
-      btnSponsor.style.display="block";
-    }
+
   });
 
   document.addEventListener("touchend",()=>drag=false);
