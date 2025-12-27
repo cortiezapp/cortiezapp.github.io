@@ -13,7 +13,7 @@
   },
   
   "info_dialog": {
-    "show_on_start": false,
+    "show_on_start": true,
     "title": "Informasi",
   "message": "Group WhatsApp:**\nhttps://chat.whatsapp.com/H01IcOVnL2WLXuHBE6AqWP\n\n🎁 **Video terbaik akan mendapat apresiasi khusus!**\n\n📢 **Jangan lupa follow update kami di:**\n• TikTok: https://www.tiktok.com/@cortiezapp\n• WhatsApp Channel: https://whatsapp.com/channel/0029Vb6ygqx9Bb5whdu1Wg2V\n\n🔥 **Fitur baru V1.4 sudah LIVE!**\nRasakan pengalaman gaming yang lebih smooth, responsif, dan presisi! 🚀",
     "html_enabled": true,
