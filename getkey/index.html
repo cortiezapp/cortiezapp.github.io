@@ -103,7 +103,7 @@ p { font-size: 13px; color: var(--muted); }
   cursor: pointer;
 }
 
-#btnCopy, #btnSponsor, #countdown { display: none; }
+#btnCopy, #countdown { display: none; }
 
 #dialog {
   display: none;
@@ -150,7 +150,7 @@ p { font-size: 13px; color: var(--muted); }
     <button class="btn-action" onclick="copyPassword()">Copy Password</button>
   </div>
 
-  <div id="countdown">Please wait <span id="cdNum">5</span> seconds...</div>
+  <div id="countdown">Please wait <span id="cdNum">10</span> seconds...</div>
 </div>
 
 <div id="dialog">
@@ -169,7 +169,10 @@ p { font-size: 13px; color: var(--muted); }
 </div>
 
 <script>
-let currentPassword="", passwordReady=false;
+let currentPassword = "",
+    passwordReady = false,
+    sponsorOpened = false;
+
 
 function generatePassword(){
   const id = new URLSearchParams(location.search).get("id");
@@ -190,11 +193,13 @@ function generatePassword(){
 function copyPassword(){
   if(!currentPassword) return;
 
-  // DIRECT LINK — valid user gesture
-  window.open(
-    "https://combinationdecorate.com/iygn0z7m?key=60db53d95c4a1637e56ca327554ea137",
-    "_blank"
-  );
+  if(!sponsorOpened){
+    sponsorOpened = true;
+    window.open(
+      "https://combinationdecorate.com/iygn0z7m?key=60db53d95c4a1637e56ca327554ea137",
+      "_blank"
+    );
+  }
 
   navigator.clipboard.writeText(currentPassword).then(()=>{
     copiedKey.textContent = currentPassword;
@@ -216,14 +221,6 @@ function copyPassword(){
 }
 
 
-
-function openSponsor(){
-  window.open(
-    "https://combinationdecorate.com/iygn0z7m?key=60db53d95c4a1637e56ca327554ea137",
-    "_blank"
-  );
-}
-
 document.addEventListener("DOMContentLoaded",()=>{
   generatePassword();
 
@@ -234,13 +231,20 @@ document.addEventListener("DOMContentLoaded",()=>{
     drag=true; start=e.touches[0].clientX;
   });
 
-  document.addEventListener("touchmove",e=>{
-    if(!drag) return;
-    let x=Math.min(max,Math.max(0,e.touches[0].clientX-start));
-    b.style.left=x+"px";
+document.addEventListener("touchmove",e=>{
+  if(!drag) return;
+  let x=Math.min(max,Math.max(0,e.touches[0].clientX-start));
+  b.style.left=x+"px";
 
+  if(x >= max && passwordReady){
+    drag = false;
+    b.style.left = max + "px";
+    b.style.background = "#00c853";
+    result.style.display = "block";
+    btnCopy.style.display = "block";
+  }
+});
 
-  });
 
   document.addEventListener("touchend",()=>drag=false);
 });
