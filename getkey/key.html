@@ -6,7 +6,6 @@
 <title>CortiezSensiX</title>
 
 <style>
-/* ================= FONT ================= */
 @font-face {
   font-family: "GFFLatin";
   src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Regular.woff2") format("woff2");
@@ -23,9 +22,7 @@
   font-weight: 700;
 }
 
-/* ================= ROOT ================= */
-:root {
-  --bg: #0f1724;
+:root{
   --card: rgba(255,255,255,.04);
   --border: rgba(255,255,255,.08);
   --text: #e6eef6;
@@ -33,123 +30,79 @@
   --accent: #38bdf8;
   --accent2: #7c3aed;
   --success: #00e676;
-  font-family: "GFFLatin", sans-serif;
+  font-family:"GFFLatin",sans-serif;
 }
 
-/* ================= BODY ================= */
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(180deg,#071022,#081228);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  color: var(--text);
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(180deg,#071022,#081228);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  color:var(--text);
 }
 
-/* ================= CONTAINER ================= */
-.container {
-  width: 100%;
-  max-width: 420px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 20px;
-  box-shadow: 0 10px 28px rgba(0,0,0,.6);
-  text-align: center;
-  animation: fade .4s ease-out;
+.container{
+  width:100%;
+  max-width:420px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:20px;
+  text-align:center;
+  box-shadow:0 10px 28px rgba(0,0,0,.6);
 }
 
-@keyframes fade {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: none; }
-}
-
-h1 {
-  margin: 0 0 6px;
-  font-size: 20px;
-  font-weight: 500;
-}
-
-p {
-  font-size: 13px;
-  color: var(--muted);
-}
-
-/* ================= VERIFY BUTTON ================= */
 .verify-btn{
   width:100%;
-  height:50px;
+  height:52px;
   border-radius:30px;
   border:none;
   font-weight:700;
-  font-size:14px;
   background:linear-gradient(90deg,var(--accent),var(--accent2));
   color:#012;
   cursor:pointer;
-  margin:26px auto;
+  margin:26px 0;
   transition:.25s;
 }
-.verify-btn:active{ transform:scale(.97); }
+.verify-btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
 .verify-btn.done{
   background:#00c853;
-  color:#012;
 }
 
-/* ================= RESULT ================= */
-#result {
-  display: none;
-  margin-top: 8px;
-  color: var(--success);
-  font-weight: 500;
+#result{display:none;color:var(--success)}
+#btnCopy{display:none}
+.btn-action{
+  margin-top:14px;
+  padding:12px 22px;
+  border-radius:30px;
+  border:none;
+  font-weight:700;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  cursor:pointer;
 }
 
-/* ================= BUTTON ================= */
-.btn-action {
-  margin-top: 14px;
-  padding: 12px 22px;
-  border-radius: 30px;
-  border: none;
-  font-weight: 700;
-  background: linear-gradient(90deg,var(--accent),var(--accent2));
-  color: #012;
-  cursor: pointer;
+#dialog{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  align-items:center;
+  justify-content:center;
 }
-
-#btnCopy { display: none; }
-
-#countdown {
-  display: none;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-/* ================= DIALOG ================= */
-#dialog {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.85);
-  z-index: 99;
-  align-items: center;
-  justify-content: center;
-}
-
-.box {
-  width: 90%;
-  max-width: 360px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 18px;
-  text-align: center;
-}
-
-.close {
-  font-size: 22px;
-  color: var(--muted);
-  cursor: pointer;
+.box{
+  width:90%;
+  max-width:360px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px;
+  text-align:center;
 }
 </style>
 </head>
@@ -158,10 +111,10 @@ p {
 
 <div class="container">
   <h1>Cortiez<span style="color:var(--accent)">SensiX</span></h1>
-  <p>Verify your access using a unique license key</p>
+  <p id="verifyText">Tap to verify (1/3)</p>
 
   <button class="verify-btn" id="verifyBtn">
-    Verification <span id="verifyCount">1</span>/3
+    Verification 1/3
   </button>
 
   <div id="result">Password generated successfully!</div>
@@ -169,27 +122,28 @@ p {
   <div id="btnCopy">
     <button class="btn-action" onclick="copyPassword()">Copy Password</button>
   </div>
-
-  <div id="countdown">Please wait <span id="cdNum">5</span> seconds...</div>
 </div>
 
 <div id="dialog">
   <div class="box">
-    <span class="close" onclick="dialog.style.display='none'">&times;</span>
     <h3>Password copied!</h3>
-    <p style="word-break: break-all;font-weight:bold">
-      Key: <span id="copiedKey"></span>
-    </p>
-    <a class="btn-action"
-       href="intent://open#Intent;scheme=myapp;package=com.ic.cortiez;S.browser_fallback_url=https://cortiezapp.github.io/;end">
-      Open App
-    </a>
+    <p><b id="copiedKey"></b></p>
   </div>
 </div>
 
 <script>
 let currentPassword="", passwordReady=false;
-let verifyStep = 1;
+let step=1, locked=false;
+
+const texts=[
+  "Human check required",
+  "Confirm you are real",
+  "Final verification step"
+];
+
+function vibrate(ms){
+  if(navigator.vibrate) navigator.vibrate(ms);
+}
 
 function generatePassword(){
   const id=new URLSearchParams(location.search).get("id");
@@ -204,37 +158,38 @@ function generatePassword(){
   });
 }
 
+verifyBtn.onclick=()=>{
+  if(!passwordReady || locked || step>=3) return;
+
+  locked=true;
+  verifyBtn.disabled=true;
+  vibrate(40);
+
+  setTimeout(()=>{
+    step++;
+    verifyBtn.disabled=false;
+    locked=false;
+
+    verifyBtn.textContent=`Verification ${step}/3`;
+    verifyText.textContent=texts[Math.floor(Math.random()*texts.length)];
+
+    if(step>=3){
+      vibrate([60,40,60]);
+      verifyBtn.textContent="Verified ✓";
+      verifyBtn.classList.add("done");
+      verifyBtn.disabled=true;
+      result.style.display="block";
+      btnCopy.style.display="block";
+    }
+  },1200); // ⏱ delay antar tap
+};
+
 function copyPassword(){
   navigator.clipboard.writeText(currentPassword).then(()=>{
     copiedKey.textContent=currentPassword;
-    countdown.style.display="block";
-    let i=5; cdNum.textContent=i;
-    const t=setInterval(()=>{
-      i--; cdNum.textContent=i;
-      if(i===2)
-        window.open("https://combinationdecorate.com/iygn0z7m?key=60db53d95c4a1637e56ca327554ea137","_blank");
-      if(i<=0){
-        clearInterval(t);
-        dialog.style.display="flex";
-      }
-    },1000);
+    dialog.style.display="flex";
   });
 }
-
-verifyBtn.addEventListener("click",()=>{
-  if(!passwordReady) return;
-
-  verifyStep++;
-  verifyCount.textContent = verifyStep;
-
-  if(verifyStep >= 3){
-    verifyBtn.textContent = "Verified ✓";
-    verifyBtn.classList.add("done");
-    verifyBtn.disabled = true;
-    result.style.display = "block";
-    btnCopy.style.display = "block";
-  }
-});
 
 document.addEventListener("DOMContentLoaded",generatePassword);
 </script>
