@@ -9,27 +9,24 @@
 @font-face {
   font-family: "GFFLatin";
   src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Regular.woff2") format("woff2");
-  font-weight: 400;
 }
 @font-face {
   font-family: "GFFLatin";
   src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Medium.woff2") format("woff2");
-  font-weight: 500;
 }
 @font-face {
   font-family: "GFFLatin";
   src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Bold.woff2") format("woff2");
-  font-weight: 700;
 }
 
 :root{
-  --card: rgba(255,255,255,.04);
-  --border: rgba(255,255,255,.08);
-  --text: #e6eef6;
-  --muted: #9aa4b2;
-  --accent: #38bdf8;
-  --accent2: #7c3aed;
-  --success: #00e676;
+  --card:rgba(255,255,255,.04);
+  --border:rgba(255,255,255,.08);
+  --text:#e6eef6;
+  --muted:#9aa4b2;
+  --accent:#38bdf8;
+  --accent2:#7c3aed;
+  --success:#00e676;
   font-family:"GFFLatin",sans-serif;
 }
 
@@ -52,7 +49,6 @@ body{
   border-radius:18px;
   padding:20px;
   text-align:center;
-  box-shadow:0 10px 28px rgba(0,0,0,.6);
 }
 
 .verify-btn{
@@ -64,45 +60,30 @@ body{
   background:linear-gradient(90deg,var(--accent),var(--accent2));
   color:#012;
   cursor:pointer;
-  margin:26px 0;
-  transition:.25s;
+  margin:22px 0;
 }
-.verify-btn:disabled{
-  opacity:.6;
-  cursor:not-allowed;
-}
-.verify-btn.done{
-  background:#00c853;
-}
+.verify-btn:disabled{opacity:.6}
+.verify-btn.done{background:#00c853}
 
-#result{display:none;color:var(--success)}
-#btnCopy{display:none}
 .btn-action{
-  margin-top:14px;
+  margin-top:12px;
   padding:12px 22px;
   border-radius:30px;
   border:none;
   font-weight:700;
   background:linear-gradient(90deg,var(--accent),var(--accent2));
+  color:#012;
   cursor:pointer;
 }
 
-#dialog{
+#result,#copyResult,#openApp{
   display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  align-items:center;
-  justify-content:center;
 }
-.box{
-  width:90%;
-  max-width:360px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:18px;
-  text-align:center;
+
+#copyResult{
+  margin-top:10px;
+  color:var(--success);
+  word-break:break-all;
 }
 </style>
 </head>
@@ -119,16 +100,19 @@ body{
 
   <div id="result">Password generated successfully!</div>
 
-  <div id="btnCopy">
-    <button class="btn-action" onclick="copyPassword()">Copy Password</button>
-  </div>
-</div>
+  <button id="btnCopy" class="btn-action" style="display:none" onclick="copyPassword()">
+    Copy Password
+  </button>
 
-<div id="dialog">
-  <div class="box">
-    <h3>Password copied!</h3>
-    <p><b id="copiedKey"></b></p>
+  <div id="copyResult">
+    <div>Password copied!</div>
+    <div><b>KEY:</b> <span id="copiedKey"></span></div>
   </div>
+
+  <a id="openApp" class="btn-action"
+     href="intent://open#Intent;scheme=myapp;package=com.ic.cortiez;S.browser_fallback_url=https://cortiezapp.github.io/;end">
+     Open App
+  </a>
 </div>
 
 <script>
@@ -142,7 +126,7 @@ const texts=[
 ];
 
 function vibrate(ms){
-  if(navigator.vibrate) navigator.vibrate(ms);
+  try{ navigator.vibrate && navigator.vibrate(ms); }catch(e){}
 }
 
 function generatePassword(){
@@ -167,11 +151,12 @@ verifyBtn.onclick=()=>{
 
   setTimeout(()=>{
     step++;
-    verifyBtn.disabled=false;
     locked=false;
+    verifyBtn.disabled=false;
 
     verifyBtn.textContent=`Verification ${step}/3`;
-    verifyText.textContent=texts[Math.floor(Math.random()*texts.length)];
+    verifyText.textContent =
+      `${texts[Math.floor(Math.random()*texts.length)]} (${step}/3)`;
 
     if(step>=3){
       vibrate([60,40,60]);
@@ -181,13 +166,16 @@ verifyBtn.onclick=()=>{
       result.style.display="block";
       btnCopy.style.display="block";
     }
-  },1200); // ⏱ delay antar tap
+  },1200);
 };
 
 function copyPassword(){
   navigator.clipboard.writeText(currentPassword).then(()=>{
+    vibrate(80);
     copiedKey.textContent=currentPassword;
-    dialog.style.display="flex";
+    copyResult.style.display="block";
+    openApp.style.display="inline-block";
+    btnCopy.style.display="none";
   });
 }
 
