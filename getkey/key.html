@@ -12,16 +12,12 @@
 }
 @font-face {
   font-family: "GFFLatin";
-  src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Medium.woff2") format("woff2");
-}
-@font-face {
-  font-family: "GFFLatin";
   src: url("https://cortiezapp.github.io/fonts/GFF-Latin-Bold.woff2") format("woff2");
 }
 
 :root{
-  --card:rgba(255,255,255,.04);
-  --border:rgba(255,255,255,.08);
+  --card:rgba(255,255,255,.05);
+  --border:rgba(255,255,255,.1);
   --text:#e6eef6;
   --muted:#9aa4b2;
   --accent:#38bdf8;
@@ -47,11 +43,11 @@ body{
   background:var(--card);
   border:1px solid var(--border);
   border-radius:18px;
-  padding:20px;
+  padding:22px;
   text-align:center;
 }
 
-.verify-btn{
+.verify-btn,.btn-action{
   width:100%;
   height:52px;
   border-radius:30px;
@@ -60,30 +56,47 @@ body{
   background:linear-gradient(90deg,var(--accent),var(--accent2));
   color:#012;
   cursor:pointer;
-  margin:22px 0;
-}
-.verify-btn:disabled{opacity:.6}
-.verify-btn.done{background:#00c853}
-
-.btn-action{
-  margin-top:12px;
-  padding:12px 22px;
-  border-radius:30px;
-  border:none;
-  font-weight:700;
-  background:linear-gradient(90deg,var(--accent),var(--accent2));
-  color:#012;
-  cursor:pointer;
+  margin-top:16px;
 }
 
-#result,#copyResult,#openApp{
+.verify-btn:disabled,
+.btn-action:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.verify-btn.done{
+  background:#00c853;
+}
+
+#result{
   display:none;
+  margin-top:16px;
+  font-weight:700;
 }
 
 #copyResult{
-  margin-top:10px;
+  display:none;
+  margin-top:16px;
   color:var(--success);
+  text-align:center;
+  background:rgba(0,0,0,.35);
+  padding:14px;
+  border-radius:14px;
+  border:1px solid var(--border);
   word-break:break-all;
+}
+
+#openApp{
+  display:none;
+  margin-top:14px;
+  text-decoration:none;
+  display:block;
+}
+
+#safelinkBox{
+  display:none;
+  margin-top:18px;
 }
 </style>
 </head>
@@ -92,15 +105,24 @@ body{
 
 <div class="container">
   <h1>Cortiez<span style="color:var(--accent)">SensiX</span></h1>
+
   <p id="verifyText">Tap to verify (1/3)</p>
 
   <button class="verify-btn" id="verifyBtn">
     Verification 1/3
   </button>
 
+  <!-- Safelink -->
+  <div id="safelinkBox">
+    <p id="countText">Please wait...</p>
+    <button id="unlockBtn" class="btn-action" disabled>
+      Unlock Link
+    </button>
+  </div>
+
   <div id="result">Password generated successfully!</div>
 
-  <button id="btnCopy" class="btn-action" style="display:none" onclick="copyPassword()">
+  <button id="btnCopy" class="btn-action" style="display:none">
     Copy Password
   </button>
 
@@ -116,8 +138,10 @@ body{
 </div>
 
 <script>
-let currentPassword="", passwordReady=false;
-let step=1, locked=false;
+let currentPassword="";
+let passwordReady=false;
+let step=1;
+let locked=false;
 
 const texts=[
   "Human check required",
@@ -132,12 +156,15 @@ function vibrate(ms){
 function generatePassword(){
   const id=new URLSearchParams(location.search).get("id");
   if(!id) return;
+
   const base="Cyrust21"+id+new Date().getHours();
   crypto.subtle.digest("SHA-256",new TextEncoder().encode(base))
   .then(h=>{
-    const c="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789@#$";
-    currentPassword=[...new Uint8Array(h)].slice(0,10)
-      .map(b=>c[b%c.length]).join("");
+    const chars="ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789@#$";
+    currentPassword=[...new Uint8Array(h)]
+      .slice(0,10)
+      .map(b=>chars[b%chars.length])
+      .join("");
     passwordReady=true;
   });
 }
@@ -155,29 +182,48 @@ verifyBtn.onclick=()=>{
     verifyBtn.disabled=false;
 
     verifyBtn.textContent=`Verification ${step}/3`;
-    verifyText.textContent =
+    verifyText.textContent=
       `${texts[Math.floor(Math.random()*texts.length)]} (${step}/3)`;
 
     if(step>=3){
-      vibrate([60,40,60]);
       verifyBtn.textContent="Verified ✓";
       verifyBtn.classList.add("done");
       verifyBtn.disabled=true;
-      result.style.display="block";
-      btnCopy.style.display="block";
+      verifyText.textContent="Verification complete";
+
+      safelinkBox.style.display="block";
+
+      let time=15;
+      countText.textContent=`Unlocking in ${time}s`;
+
+      const timer=setInterval(()=>{
+        time--;
+        countText.textContent=`Unlocking in ${time}s`;
+        if(time<=0){
+          clearInterval(timer);
+          countText.textContent="Unlocked ✓";
+          unlockBtn.disabled=false;
+        }
+      },1000);
     }
   },1200);
 };
 
-function copyPassword(){
+unlockBtn.onclick=()=>{
+  safelinkBox.style.display="none";
+  result.style.display="block";
+  btnCopy.style.display="block";
+};
+
+btnCopy.onclick=()=>{
   navigator.clipboard.writeText(currentPassword).then(()=>{
     vibrate(80);
     copiedKey.textContent=currentPassword;
     copyResult.style.display="block";
-    openApp.style.display="inline-block";
+    openApp.style.display="block";
     btnCopy.style.display="none";
   });
-}
+};
 
 document.addEventListener("DOMContentLoaded",generatePassword);
 </script>
