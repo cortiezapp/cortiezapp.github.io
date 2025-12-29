@@ -5,7 +5,12 @@
   <meta charset="UTF-8">
   <title>Verifikasi Perangkat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background: #0f172a;
@@ -16,6 +21,7 @@
       height: 100vh;
       margin: 0;
     }
+
     .card {
       background: #020617;
       padding: 24px;
@@ -25,6 +31,17 @@
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,.4);
     }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .timer {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 12px 0;
+    }
+
     button {
       background: #22c55e;
       border: none;
@@ -36,62 +53,126 @@
       width: 100%;
       margin-top: 16px;
     }
+
     button:disabled {
       background: #555;
       cursor: not-allowed;
     }
+
     .small {
       font-size: 12px;
       color: #94a3b8;
       margin-top: 12px;
+      min-height: 18px;
     }
   </style>
 </head>
+
 <body>
 
 <div class="card">
-  <h2>Verifikasi Perangkat</h2>
+  <h2>🔐 Verifikasi Perangkat</h2>
   <p>Aktifkan fitur aplikasi di perangkat ini.</p>
 
-  <button id="verifyBtn">Verifikasi & Aktifkan</button>
+  <div class="timer" id="timer">--:--:--</div>
 
-  <div class="small" id="status"></div>
+  <button id="verifyBtn" disabled>Verifikasi & Aktifkan</button>
+
+  <div class="small" id="status">Memuat data verifikasi…</div>
 </div>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const hash = params.get("h"); // SHA-256 ANDROID_ID
-  const token = params.get("t"); // one-time token
+/* ==================================================
+   ⏱ KONFIG WAKTU VALID (UBAH DI SINI SAJA)
+   ================================================== */
+const VALID_HOURS = 2; // 🔥 contoh: 1, 2, 6, 12
 
-  const status = document.getElementById("status");
-  const btn = document.getElementById("verifyBtn");
+/* ================================================== */
 
-  if (!hash || !token) {
-    status.innerText = "Data verifikasi tidak valid.";
+const params = new URLSearchParams(window.location.search);
+const hash  = params.get("h"); // SHA-256 ANDROID_ID
+const token = params.get("t"); // one-time token
+
+const statusEl = document.getElementById("status");
+const timerEl  = document.getElementById("timer");
+const btn      = document.getElementById("verifyBtn");
+
+if (!hash || !token) {
+  statusEl.innerText = "❌ Data verifikasi tidak valid.";
+  btn.disabled = true;
+  throw new Error("Invalid params");
+}
+
+const STORAGE_KEY = "verify_data_" + token;
+
+// Buat waktu expire hanya sekali
+if (!localStorage.getItem(STORAGE_KEY)) {
+  const now = Date.now();
+  const expire = now + (VALID_HOURS * 60 * 60 * 1000);
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    token,
+    hash,
+    expire
+  }));
+}
+
+const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
+function updateTimer() {
+  const left = data.expire - Date.now();
+
+  if (left <= 0) {
+    timerEl.innerText = "⏰ EXPIRED";
+    statusEl.innerText = "Waktu verifikasi telah habis.";
     btn.disabled = true;
+    localStorage.removeItem(STORAGE_KEY);
+    return;
   }
 
-  btn.onclick = () => {
-    // Cegah token dipakai ulang (per browser)
-    if (localStorage.getItem("used_" + token)) {
-      status.innerText = "Token sudah digunakan.";
-      btn.disabled = true;
-      return;
-    }
+  const total = Math.floor(left / 1000);
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
 
-    // Tandai token sebagai used
-    localStorage.setItem("used_" + token, "1");
+  timerEl.innerText =
+    String(h).padStart(2, "0") + ":" +
+    String(m).padStart(2, "0") + ":" +
+    String(s).padStart(2, "0");
 
-    status.innerText = "Verifikasi berhasil, membuka aplikasi...";
+  statusEl.innerText = "Token masih berlaku.";
+  btn.disabled = false;
+}
 
-    // Redirect kembali ke aplikasi
-    const deepLink =
-      `myapp://open?ok=1&t=${encodeURIComponent(token)}&h=${encodeURIComponent(hash)}`;
+updateTimer();
+setInterval(updateTimer, 1000);
 
-    setTimeout(() => {
-      window.location.href = deepLink;
-    }, 800);
-  };
+btn.onclick = () => {
+
+  // Token expired?
+  if (Date.now() > data.expire) {
+    updateTimer();
+    return;
+  }
+
+  // Cegah token dipakai ulang (per browser)
+  if (localStorage.getItem("used_" + token)) {
+    statusEl.innerText = "⚠️ Token sudah digunakan.";
+    btn.disabled = true;
+    return;
+  }
+
+  localStorage.setItem("used_" + token, "1");
+
+  statusEl.innerText = "✅ Verifikasi berhasil, membuka aplikasi…";
+
+  const deepLink =
+    `myapp://open?ok=1&t=${encodeURIComponent(token)}&h=${encodeURIComponent(hash)}`;
+
+  setTimeout(() => {
+    window.location.href = deepLink;
+  }, 800);
+};
 </script>
 
 </body>
