@@ -1,1 +1,98 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Verifikasi Perangkat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #020617;
+      padding: 24px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,.4);
+    }
+    button {
+      background: #22c55e;
+      border: none;
+      color: #000;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 16px;
+    }
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+    .small {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Verifikasi Perangkat</h2>
+  <p>Aktifkan fitur aplikasi di perangkat ini.</p>
+
+  <button id="verifyBtn">Verifikasi & Aktifkan</button>
+
+  <div class="small" id="status"></div>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const hash = params.get("h"); // SHA-256 ANDROID_ID
+  const token = params.get("t"); // one-time token
+
+  const status = document.getElementById("status");
+  const btn = document.getElementById("verifyBtn");
+
+  if (!hash || !token) {
+    status.innerText = "Data verifikasi tidak valid.";
+    btn.disabled = true;
+  }
+
+  btn.onclick = () => {
+    // Cegah token dipakai ulang (per browser)
+    if (localStorage.getItem("used_" + token)) {
+      status.innerText = "Token sudah digunakan.";
+      btn.disabled = true;
+      return;
+    }
+
+    // Tandai token sebagai used
+    localStorage.setItem("used_" + token, "1");
+
+    status.innerText = "Verifikasi berhasil, membuka aplikasi...";
+
+    // Redirect kembali ke aplikasi
+    const deepLink =
+      `myapp://open?ok=1&t=${encodeURIComponent(token)}&h=${encodeURIComponent(hash)}`;
+
+    setTimeout(() => {
+      window.location.href = deepLink;
+    }, 800);
+  };
+</script>
+
+</body>
+</html>
