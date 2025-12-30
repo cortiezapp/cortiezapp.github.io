@@ -3,40 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <title>License Verification</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-body{background:#020617;color:#fff;font-family:Arial;padding:20px}
-input,button{width:100%;padding:10px;margin:6px 0}
+body{
+background:#020617;
+color:#fff;
+font-family:system-ui;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+margin:0;
+}
+.card{
+background:#020617;
+border:1px solid #1e293b;
+padding:20px;
+border-radius:12px;
+width:100%;
+max-width:380px;
+}
+input,button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:8px;
+border:1px solid #1e293b;
+background:#020617;
+color:#fff;
+}
+button{
+background:#38bdf8;
+color:#000;
+border:none;
+font-weight:700;
+}
 </style>
 </head>
 <body>
 
-<h2>🔑 Enter License Key</h2>
-
-<input id="license" placeholder="CORTIEZ-XXXX-XXXX">
+<div class="card">
+<h3>🔑 Enter License Key</h3>
+<input id="lic" placeholder="CORTIEZ-XXXX">
 <button onclick="verify()">Verify</button>
-
-<p id="status"></p>
+<p id="msg"></p>
+</div>
 
 <script>
-const params = new URLSearchParams(location.search);
-const hash = params.get("h");
-const API = "https://cortiez-license.cyrustmods21.workers.dev";
-
 async function verify(){
-  status.textContent = "Checking...";
-  const r = await fetch(
-    `${API}/verify?license=${encodeURIComponent(license.value)}`
-  );
-  const j = await r.json();
-
-  if (!j.ok){
-    status.textContent = "❌ License invalid / expired";
-    return;
+ msg.textContent="Checking...";
+ const r=await fetch(
+  "https://cortiez-license.cyrustmods21.workers.dev/verify",
+  {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({license_key:lic.value})
   }
-
-  await fetch(`${API}/register?h=${encodeURIComponent(hash)}`);
-
-  location.href = `cortiez://open?ok=1&h=${hash}`;
+ );
+ const j=await r.json();
+ if(j.ok){
+   location.href="cortiez://verify?ok=1";
+ }else{
+   msg.textContent="License invalid / expired";
+ }
 }
 </script>
 
