@@ -5,25 +5,38 @@
 <title>License Verification</title>
 <style>
 body{background:#020617;color:#fff;font-family:Arial;padding:20px}
-input,button{width:100%;padding:12px;margin:8px 0}
+input,button{width:100%;padding:10px;margin:6px 0}
 </style>
 </head>
 <body>
 
-<h2>🔑 License Verification</h2>
-<input id="lic" placeholder="ENTER LICENSE">
-<button onclick="verify()">VERIFY</button>
-<p id="res"></p>
+<h2>🔑 Enter License Key</h2>
+
+<input id="license" placeholder="CORTIEZ-XXXX-XXXX">
+<button onclick="verify()">Verify</button>
+
+<p id="status"></p>
 
 <script>
+const params = new URLSearchParams(location.search);
+const hash = params.get("h");
+const API = "https://cortiez-license.cyrustmods21.workers.dev";
+
 async function verify(){
-  const r = await fetch("https://cortiez-license.cyrustmods21.workers.dev/verify",{
-    method:"POST",
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({license:lic.value})
-  });
+  status.textContent = "Checking...";
+  const r = await fetch(
+    `${API}/verify?license=${encodeURIComponent(license.value)}`
+  );
   const j = await r.json();
-  res.innerText = j.valid ? "✅ VALID - OPEN APP" : "❌ INVALID";
+
+  if (!j.ok){
+    status.textContent = "❌ License invalid / expired";
+    return;
+  }
+
+  await fetch(`${API}/register?h=${encodeURIComponent(hash)}`);
+
+  location.href = `cortiez://open?ok=1&h=${hash}`;
 }
 </script>
 
