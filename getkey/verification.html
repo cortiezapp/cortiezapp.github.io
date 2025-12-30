@@ -78,9 +78,16 @@ const btn = document.getElementById("verifyBtn");
 const status = document.getElementById("status");
 const timer = document.getElementById("timer");
 
+let verifiedOnce = false;
+
 fetch(`${WORKER}/create?h=${encodeURIComponent(hash)}`)
 .then(r => r.json())
 .then(d => {
+
+  if (!d.token || !d.expire || !d.server_time) {
+    status.innerText = "❌ Data server tidak valid";
+    return;
+  }
 
   const token = d.token;
   const expire = d.expire * 1000;
@@ -88,6 +95,7 @@ fetch(`${WORKER}/create?h=${encodeURIComponent(hash)}`)
 
   function tick() {
     const left = expire - (Date.now() - offset);
+
     if (left <= 0) {
       timer.innerText = "00:00";
       status.innerText = "⏰ Token expired";
@@ -96,11 +104,12 @@ fetch(`${WORKER}/create?h=${encodeURIComponent(hash)}`)
     }
 
     const s = Math.floor(left / 1000);
-    const m = Math.floor((s % 3600) / 60);
     const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
 
     timer.innerText =
       `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}`;
+
     btn.disabled = false;
   }
 
@@ -108,28 +117,50 @@ fetch(`${WORKER}/create?h=${encodeURIComponent(hash)}`)
   setInterval(tick, 1000);
 
   btn.onclick = async () => {
+    if (verifiedOnce) return;
+    verifiedOnce = true;
+
     btn.disabled = true;
     status.innerText = "Memverifikasi…";
 
-    const res = await fetch(
-      `${WORKER}/verify?t=${encodeURIComponent(token)}&h=${encodeURIComponent(hash)}`
-    );
-    const json = await res.json();
+    try {
+      const res = await fetch(
+        `${WORKER}/verify?t=${encodeURIComponent(token)}&h=${encodeURIComponent(hash)}`
+      );
+      const json = await res.json();
 
-    if (!json.ok) {
-      status.innerText = "❌ Token tidak valid / expired";
-      return;
+      if (!json.ok) {
+        status.innerText = "❌ Token tidak valid / expired";
+        verifiedOnce = false;
+        return;
+      }
+
+      // simpan user
+      const reg = await fetch(
+        `${WORKER}/register?h=${encodeURIComponent(hash)}`
+      );
+
+      if (!reg.ok) {
+        status.innerText = "❌ Gagal menyimpan data user";
+        verifiedOnce = false;
+        return;
+      }
+
+      status.innerText = "✅ Berhasil, membuka aplikasi…";
+
+      location.href =
+        `myapp://open?ok=1&t=${token}&h=${hash}`;
+
+    } catch (e) {
+      status.innerText = "❌ Gagal koneksi server";
+      verifiedOnce = false;
     }
-
-    status.innerText = "✅ Berhasil, membuka aplikasi…";
-
-    location.href =
-      `myapp://open?ok=1&t=${token}&h=${hash}`;
   };
 })
 .catch(() => {
   status.innerText = "❌ Gagal koneksi server";
 });
 </script>
+
 </body>
 </html>
