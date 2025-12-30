@@ -1,84 +1,66 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Verifikasi Perangkat</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Verifikasi Perangkat</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .card {
-      background: #020617;
-      padding: 24px;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 360px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,.4);
-    }
-
-    h2 {
-      margin-top: 0;
-    }
-
-    .timer {
-      font-size: 22px;
-      font-weight: bold;
-      margin: 12px 0;
-    }
-
-    button {
-      background: #22c55e;
-      border: none;
-      color: #000;
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 16px;
-    }
-
-    button:disabled {
-      background: #555;
-      cursor: not-allowed;
-    }
-
-    .small {
-      font-size: 12px;
-      color: #94a3b8;
-      margin-top: 12px;
-      min-height: 18px;
-    }
-  </style>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+.card {
+  background: #020617;
+  padding: 24px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,.4);
+}
+.timer {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 12px 0;
+}
+button {
+  background: #22c55e;
+  border: none;
+  color: #000;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  width: 100%;
+  cursor: pointer;
+}
+button:disabled {
+  background: #555;
+  cursor: not-allowed;
+}
+.small {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 12px;
+  min-height: 18px;
+}
+</style>
 </head>
 
 <body>
-
 <div class="card">
   <h2>🔐 Verifikasi Perangkat</h2>
   <p>Aktifkan fitur aplikasi di perangkat ini.</p>
 
-  <div class="timer" id="timer">--:--:--</div>
-
+  <div class="timer" id="timer">--:--</div>
   <button id="verifyBtn" disabled>Verifikasi & Aktifkan</button>
-
-  <div class="small" id="status">Memuat data verifikasi…</div>
+  <div class="small" id="status">Memuat data…</div>
 </div>
 
 <script>
@@ -90,7 +72,11 @@ if (!hash) {
   throw "";
 }
 
-const WORKER = "https://cortiez-verify.workers.dev";
+const WORKER = "https://cortiezapp.cyrustmods21.workers.dev";
+
+const btn = document.getElementById("verifyBtn");
+const status = document.getElementById("status");
+const timer = document.getElementById("timer");
 
 fetch(`${WORKER}/create?h=${encodeURIComponent(hash)}`)
 .then(r => r.json())
@@ -100,37 +86,50 @@ fetch(`${WORKER}/create?h=${encodeURIComponent(hash)}`)
   const expire = d.expire * 1000;
   const offset = Date.now() - (d.server_time * 1000);
 
-  const btn = document.getElementById("verifyBtn");
-  const status = document.getElementById("status");
-
   function tick() {
     const left = expire - (Date.now() - offset);
-
     if (left <= 0) {
+      timer.innerText = "00:00";
       status.innerText = "⏰ Token expired";
       btn.disabled = true;
       return;
     }
 
     const s = Math.floor(left / 1000);
-    const h = Math.floor(s / 3600);
     const m = Math.floor((s % 3600) / 60);
+    const h = Math.floor(s / 3600);
 
-    status.innerText =
-      `Berlaku ${h} jam ${m} menit`;
+    timer.innerText =
+      `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}`;
     btn.disabled = false;
   }
 
   tick();
   setInterval(tick, 1000);
 
-  btn.onclick = () => {
+  btn.onclick = async () => {
+    btn.disabled = true;
+    status.innerText = "Memverifikasi…";
+
+    const res = await fetch(
+      `${WORKER}/verify?t=${encodeURIComponent(token)}&h=${encodeURIComponent(hash)}`
+    );
+    const json = await res.json();
+
+    if (!json.ok) {
+      status.innerText = "❌ Token tidak valid / expired";
+      return;
+    }
+
+    status.innerText = "✅ Berhasil, membuka aplikasi…";
+
     location.href =
       `myapp://open?ok=1&t=${token}&h=${hash}`;
   };
+})
+.catch(() => {
+  status.innerText = "❌ Gagal koneksi server";
 });
 </script>
-
-
 </body>
 </html>
