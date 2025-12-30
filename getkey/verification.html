@@ -4,174 +4,149 @@
 <meta charset="UTF-8">
 <title>Verifikasi Perangkat</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-/* FALLBACK JIKA BUKA DI LUAR BLOGGER */
-:root{
-  --bodyB:#020617;
-  --contentB:#020617;
-  --headC:#e5e7eb;
-  --linkC:#22c55e;
-  --contentL:#1f2937;
-  --iconC:#22c55e;
+body {
+    font-family: Arial;
+    background:#0f172a;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
 }
-
-/* RESET */
-*{box-sizing:border-box}
-
-/* BODY */
-body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--bodyB);
-  color:var(--headC);
-  font-family:var(--fontB,system-ui);
+.card {
+    background:#020617;
+    padding:24px;
+    border-radius:12px;
+    width:100%;
+    max-width:360px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.4);
 }
-
-/* CARD */
-.card{
-  background:var(--contentB);
-  width:100%;
-  max-width:380px;
-  padding:24px;
-  border-radius:14px;
-  border:1px solid var(--contentL);
-  text-align:center;
-  box-shadow:0 10px 40px rgba(0,0,0,.4);
+button {
+    background:#22c55e;
+    border:none;
+    color:#000;
+    padding:12px 16px;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+    width:100%;
+    margin-top:16px;
 }
-
-/* TITLE */
-.card h2{
-  margin:0 0 8px;
-  font-weight:600;
+button:disabled {
+    background:#555;
+    cursor:not-allowed;
 }
-
-/* TEXT */
-.card p{
-  font-size:14px;
-  opacity:.85;
+.timer {
+    font-size:22px;
+    font-weight:bold;
+    margin:12px 0;
 }
-
-/* TIMER */
-.timer{
-  font-size:26px;
-  font-weight:700;
-  margin:16px 0;
-  color:var(--iconC);
+.expire {
+    font-size:13px;
+    color:#94a3b8;
+    margin-bottom:8px;
 }
-
-/* BUTTON */
-button{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:10px;
-  background:var(--linkC);
-  color:#000;
-  font-size:15px;
-  font-weight:700;
-  cursor:pointer;
-  transition:var(--trans-2);
-}
-
-button:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-}
-
-/* STATUS */
-.status{
-  margin-top:14px;
-  font-size:12px;
-  min-height:18px;
-  opacity:.8;
+.small {
+    font-size:12px;
+    color:#94a3b8;
+    margin-top:12px;
+    min-height:18px;
 }
 </style>
 </head>
-
 <body>
 
 <div class="card">
-  <h2>Verifikasi Perangkat</h2>
-  <p>Aktifkan fitur aplikasi pada perangkat ini.</p>
+    <h2>🔐 Verifikasi Perangkat</h2>
+    <p>Aktifkan fitur aplikasi di perangkat ini.</p>
 
-  <div class="timer" id="timer">--:--</div>
+    <div class="timer" id="timer">--:--</div>
+    <div class="expire" id="expireTime">Expire: -</div>
 
-  <button id="verifyBtn" disabled>Verifikasi & Aktifkan</button>
-
-  <div class="status" id="status">Memuat data…</div>
+    <button id="verifyBtn" disabled>Verifikasi & Aktifkan</button>
+    <div class="small" id="status">Memuat data verifikasi…</div>
 </div>
 
 <script>
 const params = new URLSearchParams(location.search);
 const hash = params.get("h");
-
 if (!hash) {
-  document.body.innerText = "Invalid request";
-  throw "";
+    document.body.innerHTML = "Invalid request";
+    throw "";
 }
 
-const WORKER = "https://cortiezapp.cyrustmods21.workers.dev";
-
+const WORKER = "https://cortiez-license.cyrustmods21.workers.dev";
 const btn = document.getElementById("verifyBtn");
-const timer = document.getElementById("timer");
 const status = document.getElementById("status");
+const timer = document.getElementById("timer");
+const expireText = document.getElementById("expireTime");
 
 fetch(`${WORKER}/create?h=${encodeURIComponent(hash)}`)
 .then(r => r.json())
 .then(d => {
+    const token = d.token;
+    const expireTs = d.expire * 1000;
+    const offset = Date.now() - (d.server_time * 1000);
 
-  const token = d.token;
-  const expire = d.expire * 1000;
-  const offset = Date.now() - (d.server_time * 1000);
+    // convert timestamp → WIB
+    const expireDate = new Date(expireTs);
+    expireText.innerText =
+        "Expire: " + expireDate.toLocaleString("id-ID", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            timeZone: "Asia/Jakarta"
+        }) + " WIB";
 
-  function tick(){
-    const left = expire - (Date.now() - offset);
+    function tick() {
+        const left = expireTs - (Date.now() - offset);
+        if (left <= 0) {
+            timer.innerText = "00:00";
+            status.innerText = "⏰ Token expired";
+            btn.disabled = true;
+            return;
+        }
 
-    if (left <= 0) {
-      timer.textContent = "00:00";
-      status.textContent = "Token kedaluwarsa";
-      btn.disabled = true;
-      return;
+        const totalSec = Math.floor(left / 1000);
+        const h = Math.floor(totalSec / 3600);
+        const m = Math.floor((totalSec % 3600) / 60);
+
+        timer.innerText =
+            `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}`;
+
+        btn.disabled = false;
     }
 
-    const s = Math.floor(left / 1000);
-    const m = Math.floor((s % 3600) / 60);
-    const h = Math.floor(s / 3600);
+    tick();
+    setInterval(tick, 1000);
 
-    timer.textContent =
-      h.toString().padStart(2,"0") + ":" +
-      m.toString().padStart(2,"0");
+    btn.onclick = async () => {
+        btn.disabled = true;
+        status.innerText = "Memverifikasi…";
 
-    btn.disabled = false;
-  }
+        const res = await fetch(
+            `${WORKER}/verify?t=${encodeURIComponent(token)}&h=${encodeURIComponent(hash)}`
+        );
+        const json = await res.json();
+        if (!json.ok) {
+            status.innerText = "❌ Token tidak valid / expired";
+            return;
+        }
 
-  tick();
-  setInterval(tick, 1000);
+        await fetch(`${WORKER}/register?h=${encodeURIComponent(hash)}`);
 
-  btn.onclick = async () => {
-    btn.disabled = true;
-    status.textContent = "Memverifikasi…";
-
-    const res = await fetch(
-      `${WORKER}/verify?t=${token}&h=${hash}`
-    );
-    const json = await res.json();
-
-    if (!json.ok) {
-      status.textContent = "Verifikasi gagal / expired";
-      return;
-    }
-
-    status.textContent = "Berhasil, membuka aplikasi…";
-    location.href = `myapp://open?ok=1&t=${token}&h=${hash}`;
-  };
+        status.innerText = "✅ Berhasil, membuka aplikasi…";
+        location.href = `myapp://open?ok=1&t=${token}&h=${hash}`;
+    };
 })
-.catch(()=>{
-  status.textContent = "Gagal koneksi server";
+.catch(() => {
+    status.innerText = "❌ Gagal koneksi server";
 });
 </script>
 
