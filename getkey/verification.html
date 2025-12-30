@@ -1,70 +1,32 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verifikasi Lisensi Cortiez</title>
+<title>Verification</title>
 <style>
-body { font-family: Arial; background:#0f172a; color:#fff; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;}
-.card {background:#020617;padding:24px;border-radius:12px;width:100%;max-width:360px;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,.4);}
-input, button { width:100%; padding:12px; margin-top:12px; border-radius:8px; font-size:16px;}
-button { background:#22c55e; color:#000; border:none; cursor:pointer;}
-button:disabled { background:#555; cursor:not-allowed;}
-.small { font-size:12px; margin-top:8px; color:#94a3b8;}
+body{background:#020617;color:#fff;font-family:Arial;padding:20px}
+input,button{padding:10px;width:100%;margin:6px}
 </style>
 </head>
 <body>
 
-<div class="card">
-  <h2>🔐 Verifikasi Lisensi</h2>
-  <input type="text" id="licenseKey" placeholder="Masukkan license key">
-  <button id="verifyBtn">Verifikasi & Buka App</button>
-  <div class="small" id="status"></div>
-</div>
+<h2>🔑 License Verification</h2>
+<input id="lic" placeholder="LICENSE KEY">
+<button onclick="verify()">Verify</button>
+<p id="res"></p>
 
 <script>
-const WORKER = "https://cortiez-license.cyrustmods21.workers.dev";
-
-const btn = document.getElementById("verifyBtn");
-const status = document.getElementById("status");
-const input = document.getElementById("licenseKey");
-
-btn.onclick = async () => {
-  const key = input.value.trim();
-  if(!key) { status.innerText="Masukkan license key"; return; }
-
-  status.innerText = "Memverifikasi…";
-  btn.disabled = true;
-
-  try {
-    // cek lisensi
-    const res = await fetch(`${WORKER}/verify?key=${encodeURIComponent(key)}`);
-    const json = await res.json();
-
-    if(!json.ok){
-      status.innerText="❌ Lisensi tidak valid / expired";
-      btn.disabled = false;
-      return;
-    }
-
-    // simpan device
-    const androidId = localStorage.getItem("ANDROID_ID") || crypto.randomUUID();
-    localStorage.setItem("ANDROID_ID", androidId);
-
-    await fetch(`${WORKER}/register?h=${encodeURIComponent(androidId)}`);
-
-    status.innerText="✅ Berhasil! Membuka Cortiez…";
-
-    // redirect ke app
-    setTimeout(()=> {
-      location.href = `myapp://open?ok=1&h=${androidId}`;
-    },800);
-
-  } catch(e){
-    status.innerText="❌ Gagal koneksi server";
-    btn.disabled = false;
-  }
-};
+async function verify(){
+  const lic=document.getElementById("lic").value;
+  const device="WEB-"+navigator.userAgent;
+  const r=await fetch("https://cortiez-license.cyrustmods21.workers.dev/verify",{
+    method:"POST",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({license:lic,device})
+  });
+  const j=await r.json();
+  document.getElementById("res").innerText=j.valid?"✅ Valid":"❌ Invalid";
+}
 </script>
 
 </body>
