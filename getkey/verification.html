@@ -2,153 +2,34 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Verifikasi Perangkat</title>
+<title>Verifikasi Lisensi</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body {
-    font-family: Arial;
-    background:#0f172a;
-    color:#fff;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    margin:0;
-}
-.card {
-    background:#020617;
-    padding:24px;
-    border-radius:12px;
-    width:100%;
-    max-width:360px;
-    text-align:center;
-    box-shadow:0 10px 25px rgba(0,0,0,.4);
-}
-button {
-    background:#22c55e;
-    border:none;
-    color:#000;
-    padding:12px 16px;
-    border-radius:8px;
-    font-size:16px;
-    cursor:pointer;
-    width:100%;
-    margin-top:16px;
-}
-button:disabled {
-    background:#555;
-    cursor:not-allowed;
-}
-.timer {
-    font-size:22px;
-    font-weight:bold;
-    margin:12px 0;
-}
-.expire {
-    font-size:13px;
-    color:#94a3b8;
-    margin-bottom:8px;
-}
-.small {
-    font-size:12px;
-    color:#94a3b8;
-    margin-top:12px;
-    min-height:18px;
-}
-</style>
 </head>
 <body>
-
-<div class="card">
-    <h2>🔐 Verifikasi Perangkat</h2>
-    <p>Aktifkan fitur aplikasi di perangkat ini.</p>
-
-    <div class="timer" id="timer">--:--</div>
-    <div class="expire" id="expireTime">Expire: -</div>
-
-    <button id="verifyBtn" disabled>Verifikasi & Aktifkan</button>
-    <div class="small" id="status">Memuat data verifikasi…</div>
-</div>
+<h2>Masukkan License Key</h2>
+<input type="text" id="licenseKey" placeholder="License Key">
+<button id="verifyBtn">Verifikasi & Buka App</button>
+<div id="status"></div>
 
 <script>
-const params = new URLSearchParams(location.search);
-const hash = params.get("h");
-if (!hash) {
-    document.body.innerHTML = "Invalid request";
-    throw "";
-}
-
 const WORKER = "https://cortiez-license.cyrustmods21.workers.dev";
-const btn = document.getElementById("verifyBtn");
-const status = document.getElementById("status");
-const timer = document.getElementById("timer");
-const expireText = document.getElementById("expireTime");
+document.getElementById("verifyBtn").onclick = async ()=>{
+  const key = document.getElementById("licenseKey").value.trim();
+  const status = document.getElementById("status");
+  if(!key){status.innerText="Masukkan license key"; return;}
 
-fetch(`${WORKER}/create?h=${encodeURIComponent(hash)}`)
-.then(r => r.json())
-.then(d => {
-    const token = d.token;
-    const expireTs = d.expire * 1000;
-    const offset = Date.now() - (d.server_time * 1000);
+  status.innerText="Memverifikasi…";
+  try{
+    const res = await fetch(`${WORKER}/verify?key=${encodeURIComponent(key)}`);
+    const j = await res.json();
+    if(!j.ok){status.innerText="License key invalid / expired"; return;}
 
-    // convert timestamp → WIB
-    const expireDate = new Date(expireTs);
-    expireText.innerText =
-        "Expire: " + expireDate.toLocaleString("id-ID", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-            timeZone: "Asia/Jakarta"
-        }) + " WIB";
-
-    function tick() {
-        const left = expireTs - (Date.now() - offset);
-        if (left <= 0) {
-            timer.innerText = "00:00";
-            status.innerText = "⏰ Token expired";
-            btn.disabled = true;
-            return;
-        }
-
-        const totalSec = Math.floor(left / 1000);
-        const h = Math.floor(totalSec / 3600);
-        const m = Math.floor((totalSec % 3600) / 60);
-
-        timer.innerText =
-            `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}`;
-
-        btn.disabled = false;
-    }
-
-    tick();
-    setInterval(tick, 1000);
-
-    btn.onclick = async () => {
-        btn.disabled = true;
-        status.innerText = "Memverifikasi…";
-
-        const res = await fetch(
-            `${WORKER}/verify?t=${encodeURIComponent(token)}&h=${encodeURIComponent(hash)}`
-        );
-        const json = await res.json();
-        if (!json.ok) {
-            status.innerText = "❌ Token tidak valid / expired";
-            return;
-        }
-
-        await fetch(`${WORKER}/register?h=${encodeURIComponent(hash)}`);
-
-        status.innerText = "✅ Berhasil, membuka aplikasi…";
-        location.href = `myapp://open?ok=1&t=${token}&h=${hash}`;
-    };
-})
-.catch(() => {
-    status.innerText = "❌ Gagal koneksi server";
-});
+    // redirect ke app
+    const androidHash = 'HASH_PLACEHOLDER'; // optional: bisa generate di JS
+    await fetch(`${WORKER}/register?h=${androidHash}`);
+    location.href=`myapp://open?ok=1&key=${encodeURIComponent(key)}&h=${androidHash}`;
+  }catch(e){status.innerText="Gagal koneksi server";}
+};
 </script>
-
 </body>
 </html>
