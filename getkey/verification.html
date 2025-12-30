@@ -2,71 +2,114 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Verifikasi Perangkat</title>
+<title>Device Verification</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+:root {
+  --bg: #020617;
+  --card: #020617;
+  --accent: #22c55e;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+  --danger: #ef4444;
+}
+
+* { box-sizing: border-box; }
+
 body {
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: #fff;
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at top, #020617, #000);
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  color: var(--text);
 }
+
 .card {
-  background: #020617;
-  padding: 24px;
-  border-radius: 12px;
   width: 100%;
-  max-width: 360px;
+  max-width: 380px;
+  background: rgba(2,6,23,.85);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 26px;
+  box-shadow: 0 25px 60px rgba(0,0,0,.55);
   text-align: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,.4);
 }
-.timer {
+
+h2 {
+  margin: 0 0 6px;
   font-size: 22px;
-  font-weight: bold;
-  margin: 12px 0;
 }
+
+p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.timer {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 18px 0 6px;
+  letter-spacing: 1px;
+}
+
+.status {
+  min-height: 20px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
 button {
-  background: #22c55e;
-  border: none;
-  color: #000;
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 16px;
+  margin-top: 18px;
   width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #000;
   cursor: pointer;
+  transition: transform .15s, opacity .15s;
 }
+
+button:active { transform: scale(.98); }
 button:disabled {
-  background: #555;
+  opacity: .45;
   cursor: not-allowed;
 }
-.small {
-  font-size: 12px;
-  color: #94a3b8;
-  margin-top: 12px;
-  min-height: 18px;
+
+.footer {
+  margin-top: 16px;
+  font-size: 11px;
+  color: #64748b;
 }
 </style>
 </head>
 
 <body>
+
 <div class="card">
-  <h2>🔐 Verifikasi Perangkat</h2>
-  <p>Aktifkan fitur aplikasi di perangkat ini.</p>
+  <h2>Verifikasi Perangkat</h2>
+  <p>Aktifkan fitur aplikasi pada device ini</p>
 
   <div class="timer" id="timer">--:--</div>
-  <button id="verifyBtn" disabled>Verifikasi & Aktifkan</button>
-  <div class="small" id="status">Memuat data…</div>
+  <div class="status" id="status">Menghubungkan server…</div>
+
+  <button id="verifyBtn" disabled>Aktifkan Sekarang</button>
+
+  <div class="footer">
+    License terikat ke perangkat
+  </div>
 </div>
 
 <script>
 const params = new URLSearchParams(location.search);
 const hash = params.get("h");
-
 if (!hash) {
   document.body.innerHTML = "Invalid request";
   throw "";
@@ -78,16 +121,9 @@ const btn = document.getElementById("verifyBtn");
 const status = document.getElementById("status");
 const timer = document.getElementById("timer");
 
-let verifiedOnce = false;
-
 fetch(`${WORKER}/create?h=${encodeURIComponent(hash)}`)
 .then(r => r.json())
 .then(d => {
-
-  if (!d.token || !d.expire || !d.server_time) {
-    status.innerText = "❌ Data server tidak valid";
-    return;
-  }
 
   const token = d.token;
   const expire = d.expire * 1000;
@@ -95,10 +131,9 @@ fetch(`${WORKER}/create?h=${encodeURIComponent(hash)}`)
 
   function tick() {
     const left = expire - (Date.now() - offset);
-
     if (left <= 0) {
-      timer.innerText = "00:00";
-      status.innerText = "⏰ Token expired";
+      timer.textContent = "00:00";
+      status.textContent = "License expired";
       btn.disabled = true;
       return;
     }
@@ -107,9 +142,10 @@ fetch(`${WORKER}/create?h=${encodeURIComponent(hash)}`)
     const h = Math.floor(s / 3600);
     const m = Math.floor((s % 3600) / 60);
 
-    timer.innerText =
+    timer.textContent =
       `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}`;
 
+    status.textContent = "License masih aktif";
     btn.disabled = false;
   }
 
@@ -117,48 +153,27 @@ fetch(`${WORKER}/create?h=${encodeURIComponent(hash)}`)
   setInterval(tick, 1000);
 
   btn.onclick = async () => {
-    if (verifiedOnce) return;
-    verifiedOnce = true;
-
     btn.disabled = true;
-    status.innerText = "Memverifikasi…";
+    status.textContent = "Memverifikasi…";
 
-    try {
-      const res = await fetch(
-        `${WORKER}/verify?t=${encodeURIComponent(token)}&h=${encodeURIComponent(hash)}`
-      );
-      const json = await res.json();
+    const res = await fetch(
+      `${WORKER}/verify?t=${encodeURIComponent(token)}&h=${encodeURIComponent(hash)}`
+    );
+    const json = await res.json();
 
-      if (!json.ok) {
-        status.innerText = "❌ Token tidak valid / expired";
-        verifiedOnce = false;
-        return;
-      }
-
-      // simpan user
-      const reg = await fetch(
-        `${WORKER}/register?h=${encodeURIComponent(hash)}`
-      );
-
-      if (!reg.ok) {
-        status.innerText = "❌ Gagal menyimpan data user";
-        verifiedOnce = false;
-        return;
-      }
-
-      status.innerText = "✅ Berhasil, membuka aplikasi…";
-
-      location.href =
-        `myapp://open?ok=1&t=${token}&h=${hash}`;
-
-    } catch (e) {
-      status.innerText = "❌ Gagal koneksi server";
-      verifiedOnce = false;
+    if (!json.ok) {
+      status.textContent = "License tidak valid / diganti admin";
+      return;
     }
+
+    status.textContent = "Berhasil, membuka aplikasi…";
+
+    location.href =
+      `myapp://open?ok=1&t=${token}&h=${hash}`;
   };
 })
 .catch(() => {
-  status.innerText = "❌ Gagal koneksi server";
+  status.textContent = "Gagal terhubung ke server";
 });
 </script>
 
