@@ -2,33 +2,26 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Verifikasi Lisensi</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verifikasi Cortiez</title>
 </head>
 <body>
-<h2>Masukkan License Key</h2>
-<input type="text" id="licenseKey" placeholder="License Key">
-<button id="verifyBtn">Verifikasi & Buka App</button>
-<div id="status"></div>
-
+<h2>Verifikasi Lisensi</h2>
+<input id="licenseKey" placeholder="Masukkan license key" />
+<button id="verifyBtn">Aktifkan App</button>
 <script>
 const WORKER = "https://cortiez-license.cyrustmods21.workers.dev";
-document.getElementById("verifyBtn").onclick = async ()=>{
-  const key = document.getElementById("licenseKey").value.trim();
-  const status = document.getElementById("status");
-  if(!key){status.innerText="Masukkan license key"; return;}
 
-  status.innerText="Memverifikasi…";
-  try{
-    const res = await fetch(`${WORKER}/verify?key=${encodeURIComponent(key)}`);
-    const j = await res.json();
-    if(!j.ok){status.innerText="License key invalid / expired"; return;}
-
-    // redirect ke app
-    const androidHash = 'HASH_PLACEHOLDER'; // optional: bisa generate di JS
-    await fetch(`${WORKER}/register?h=${androidHash}`);
-    location.href=`myapp://open?ok=1&key=${encodeURIComponent(key)}&h=${androidHash}`;
-  }catch(e){status.innerText="Gagal koneksi server";}
+document.getElementById("verifyBtn").onclick = async () => {
+  const key = document.getElementById("licenseKey").value;
+  const res = await fetch(`${WORKER}/verify?key=${encodeURIComponent(key)}`);
+  const data = await res.json();
+  if(data.ok){
+    alert("Lisensi valid! Buka aplikasi...");
+    // Redirect ke app
+    location.href = "myapp://open?ok=1&h="+key;
+  } else {
+    alert("Lisensi tidak valid / expired");
+  }
 };
 </script>
 </body>
