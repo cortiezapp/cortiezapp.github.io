@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time</title>
+</head>
+<body>
+<script>
+(function(){
+    const now = new Date();
+    const utc = now.getTime() + now.getTimezoneOffset()*60000; // UTC
+    const wibOffset = 7*60*60*1000; // +7 jam
+    const wibDate = new Date(utc + wibOffset);
+
+    const options = { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false };
+    const wibStr = wibDate.toLocaleString('id-ID', options);
+
+    const data = {
+        status: "success",
+        timestamp: wibDate.getTime(),
+        iso: wibDate.toISOString(),
+        wib: wibStr,
+        api_version: "1.0.0",
+        note: "Server time synchronized"
+    };
+
+    // tampilkan JSON di body
+    document.body.innerText = JSON.stringify(data, null, 2);
+})();
+</script>
+</body>
+</html>
