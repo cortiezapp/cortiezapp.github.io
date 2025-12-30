@@ -2,30 +2,28 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Verification</title>
+<title>License Verification</title>
 <style>
 body{background:#020617;color:#fff;font-family:Arial;padding:20px}
-input,button{padding:10px;width:100%;margin:6px}
+input,button{width:100%;padding:12px;margin:8px 0}
 </style>
 </head>
 <body>
 
 <h2>🔑 License Verification</h2>
-<input id="lic" placeholder="LICENSE KEY">
-<button onclick="verify()">Verify</button>
+<input id="lic" placeholder="ENTER LICENSE">
+<button onclick="verify()">VERIFY</button>
 <p id="res"></p>
 
 <script>
 async function verify(){
-  const lic=document.getElementById("lic").value;
-  const device="WEB-"+navigator.userAgent;
-  const r=await fetch("https://cortiez-license.cyrustmods21.workers.dev/verify",{
+  const r = await fetch("https://cortiez-license.cyrustmods21.workers.dev/verify",{
     method:"POST",
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({license:lic,device})
+    body:JSON.stringify({license:lic.value})
   });
-  const j=await r.json();
-  document.getElementById("res").innerText=j.valid?"✅ Valid":"❌ Invalid";
+  const j = await r.json();
+  res.innerText = j.valid ? "✅ VALID - OPEN APP" : "❌ INVALID";
 }
 </script>
 
