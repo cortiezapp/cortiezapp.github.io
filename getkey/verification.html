@@ -1,72 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>License Verification</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verifikasi License Cortiez</title>
 <style>
-body{
-background:#020617;
-color:#fff;
-font-family:system-ui;
-display:flex;
-align-items:center;
-justify-content:center;
-height:100vh;
-margin:0;
-}
-.card{
-background:#020617;
-border:1px solid #1e293b;
-padding:20px;
-border-radius:12px;
-width:100%;
-max-width:380px;
-}
-input,button{
-width:100%;
-padding:12px;
-margin-top:10px;
-border-radius:8px;
-border:1px solid #1e293b;
-background:#020617;
-color:#fff;
-}
-button{
-background:#38bdf8;
-color:#000;
-border:none;
-font-weight:700;
-}
+body { font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; background:#f6f8fa; margin:0; }
+.card { background:#fff; padding:20px 30px; border-radius:10px; box-shadow:0 4px 6px rgba(0,0,0,0.1); width:400px; border:1px solid #d0d7de; text-align:center; }
+h2 { margin-bottom:10px; }
+button { padding:10px 20px; border:none; border-radius:5px; background:#0969da; color:white; font-weight:bold; cursor:pointer; margin-top:10px; }
+input { width:100%; padding:10px; margin-top:10px; border-radius:5px; border:1px solid #ccc; }
+p { margin-top:15px; color:#24292f; font-weight:bold; }
 </style>
 </head>
 <body>
 
 <div class="card">
-<h3>🔑 Enter License Key</h3>
-<input id="lic" placeholder="CORTIEZ-XXXX">
-<button onclick="verify()">Verify</button>
-<p id="msg"></p>
+    <h2>Verifikasi License Cortiez</h2>
+    <input type="text" id="licenseKey" placeholder="Masukkan License Key"/>
+    <button id="btnVerify">Verifikasi & Buka App</button>
+    <p id="status"></p>
 </div>
 
 <script>
-async function verify(){
- msg.textContent="Checking...";
- const r=await fetch(
-  "https://cortiez-license.cyrustmods21.workers.dev/verify",
-  {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({license_key:lic.value})
-  }
- );
- const j=await r.json();
- if(j.ok){
-   location.href="cortiez://verify?ok=1";
- }else{
-   msg.textContent="License invalid / expired";
- }
-}
+document.getElementById('btnVerify').onclick = () => {
+    const key = document.getElementById('licenseKey').value.trim();
+    const statusEl = document.getElementById('status');
+    if(!key){ statusEl.innerText="Masukkan license key!"; return; }
+
+    // parsing timestamp dari key
+    const parts = key.split("-");
+    if(parts.length < 3){ statusEl.innerText="License tidak valid!"; return; }
+
+    const ts = Number(parts[2]);
+    if(isNaN(ts)){ statusEl.innerText="License tidak valid!"; return; }
+
+    const now = Date.now();
+    const hours = 24; // default durasi, bisa sesuai admin
+    const expire = ts + hours*3600*1000;
+
+    if(now > expire){
+        statusEl.innerText="License sudah expired!";
+        return;
+    }
+
+    localStorage.setItem("verified_key", key);
+    localStorage.setItem("verified_time", now);
+
+    statusEl.innerText="Berhasil! Silakan buka App.";
+
+    setTimeout(()=>{ window.location = "cortiez://open"; }, 1000);
+};
 </script>
 
 </body>
