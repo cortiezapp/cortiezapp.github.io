@@ -82,98 +82,55 @@
 </div>
 
 <script>
-/* ==================================================
-   ⏱ KONFIG WAKTU VALID (UBAH DI SINI SAJA)
-   ================================================== */
-const VALID_HOURS = 2; // 🔥 contoh: 1, 2, 6, 12
+const params = new URLSearchParams(location.search);
+const hash = params.get("h");
 
-/* ================================================== */
-
-const params = new URLSearchParams(window.location.search);
-const hash  = params.get("h"); // SHA-256 ANDROID_ID
-const token = params.get("t"); // one-time token
-
-const statusEl = document.getElementById("status");
-const timerEl  = document.getElementById("timer");
-const btn      = document.getElementById("verifyBtn");
-
-if (!hash || !token) {
-  statusEl.innerText = "❌ Data verifikasi tidak valid.";
-  btn.disabled = true;
-  throw new Error("Invalid params");
+if (!hash) {
+  document.body.innerHTML = "Invalid request";
+  throw "";
 }
 
-const STORAGE_KEY = "verify_data_" + token;
+const WORKER = "https://cortiez-verify.workers.dev";
 
-// Buat waktu expire hanya sekali
-if (!localStorage.getItem(STORAGE_KEY)) {
-  const now = Date.now();
-  const expire = now + (VALID_HOURS * 60 * 60 * 1000);
+fetch(`${WORKER}/create?h=${encodeURIComponent(hash)}`)
+.then(r => r.json())
+.then(d => {
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    token,
-    hash,
-    expire
-  }));
-}
+  const token = d.token;
+  const expire = d.expire * 1000;
+  const offset = Date.now() - (d.server_time * 1000);
 
-const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  const btn = document.getElementById("verifyBtn");
+  const status = document.getElementById("status");
 
-function updateTimer() {
-  const left = data.expire - Date.now();
+  function tick() {
+    const left = expire - (Date.now() - offset);
 
-  if (left <= 0) {
-    timerEl.innerText = "⏰ EXPIRED";
-    statusEl.innerText = "Waktu verifikasi telah habis.";
-    btn.disabled = true;
-    localStorage.removeItem(STORAGE_KEY);
-    return;
+    if (left <= 0) {
+      status.innerText = "⏰ Token expired";
+      btn.disabled = true;
+      return;
+    }
+
+    const s = Math.floor(left / 1000);
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+
+    status.innerText =
+      `Berlaku ${h} jam ${m} menit`;
+    btn.disabled = false;
   }
 
-  const total = Math.floor(left / 1000);
-  const h = Math.floor(total / 3600);
-  const m = Math.floor((total % 3600) / 60);
-  const s = total % 60;
+  tick();
+  setInterval(tick, 1000);
 
-  timerEl.innerText =
-    String(h).padStart(2, "0") + ":" +
-    String(m).padStart(2, "0") + ":" +
-    String(s).padStart(2, "0");
-
-  statusEl.innerText = "Token masih berlaku.";
-  btn.disabled = false;
-}
-
-updateTimer();
-setInterval(updateTimer, 1000);
-
-btn.onclick = () => {
-
-  // Token expired?
-  if (Date.now() > data.expire) {
-    updateTimer();
-    return;
-  }
-
-  // Cegah token dipakai ulang (per browser)
-  if (localStorage.getItem("used_" + token)) {
-    statusEl.innerText = "⚠️ Token sudah digunakan.";
-    btn.disabled = true;
-    return;
-  }
-
-  localStorage.setItem("used_" + token, "1");
-
-  statusEl.innerText = "✅ Verifikasi berhasil, membuka aplikasi…";
-
-  const deepLink =
-    `myapp://open?ok=1&t=${encodeURIComponent(token)}&h=${encodeURIComponent(hash)}`;
-
-  setTimeout(() => {
-    window.location.href = deepLink;
-  }, 800);
-};
+  btn.onclick = () => {
+    location.href =
+      `myapp://open?ok=1&t=${token}&h=${hash}`;
+  };
+});
 </script>
+
 
 </body>
 </html>
