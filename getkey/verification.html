@@ -3,24 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <title>Verifikasi Cortiez</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body { font-family: Arial, sans-serif; background:#0f172a; color:#fff; display:flex; justify-content:center; align-items:center; min-height:100vh; padding:10px; }
+  .card { background:#020617; padding:24px; border-radius:12px; width:100%; max-width:400px; text-align:center; box-shadow:0 10px 25px rgba(0,0,0,.4); }
+  input, button { width:100%; padding:12px; border-radius:8px; border:none; margin-top:12px; font-size:16px; }
+  button { background:#22c55e; color:#000; cursor:pointer; }
+  button:disabled { background:#555; cursor:not-allowed; }
+  .status { font-size:14px; margin-top:12px; color:#94a3b8; min-height:18px; }
+</style>
 </head>
 <body>
-<h2>Verifikasi Lisensi</h2>
-<input id="licenseKey" placeholder="Masukkan license key" />
-<button id="verifyBtn">Aktifkan App</button>
+<div class="card">
+  <h2>🔐 Verifikasi Perangkat</h2>
+  <p>Masukkan license key dari admin untuk membuka Cortiez</p>
+
+  <input type="text" id="licenseKey" placeholder="Masukkan License Key">
+  <button id="verifyBtn">Verifikasi & Buka App</button>
+
+  <div class="status" id="status">Menunggu input license…</div>
+</div>
+
 <script>
 const WORKER = "https://cortiez-license.cyrustmods21.workers.dev";
+const LICENSE_IN = document.getElementById("licenseKey");
+const BTN = document.getElementById("verifyBtn");
+const STATUS = document.getElementById("status");
 
-document.getElementById("verifyBtn").onclick = async () => {
-  const key = document.getElementById("licenseKey").value;
-  const res = await fetch(`${WORKER}/verify?key=${encodeURIComponent(key)}`);
-  const data = await res.json();
-  if(data.ok){
-    alert("Lisensi valid! Buka aplikasi...");
-    // Redirect ke app
-    location.href = "myapp://open?ok=1&h="+key;
-  } else {
-    alert("Lisensi tidak valid / expired");
+BTN.onclick = async () => {
+  const key = LICENSE_IN.value.trim();
+  if(!key){ STATUS.innerText="Masukkan license key!"; return; }
+
+  STATUS.innerText="Memverifikasi…";
+  BTN.disabled = true;
+
+  try {
+    const res = await fetch(`${WORKER}/verify?key=${encodeURIComponent(key)}`);
+    const data = await res.json();
+    if(!data.ok){
+      STATUS.innerText="❌ License tidak valid / expired";
+      BTN.disabled = false;
+      return;
+    }
+
+    // Register device
+    const androidId = localStorage.getItem("android_id") || crypto.randomUUID();
+    localStorage.setItem("android_id", androidId);
+    await fetch(`${WORKER}/register?h=${encodeURIComponent(androidId)}`);
+
+    STATUS.innerText="✅ License valid! Membuka app…";
+    setTimeout(()=>{
+      location.href = `myapp://open?ok=1&key=${encodeURIComponent(key)}&h=${encodeURIComponent(androidId)}`;
+    }, 800);
+
+  } catch(e){
+    STATUS.innerText="❌ Gagal koneksi server";
+    BTN.disabled = false;
   }
 };
 </script>
