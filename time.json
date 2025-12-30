@@ -1,0 +1,35 @@
+// time.json - Pure JSON output
+const now = new Date();
+const wibFormatter = new Intl.DateTimeFormat('id-ID', {
+  timeZone: 'Asia/Jakarta',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false
+});
+
+const output = {
+  status: 'success',
+  timestamp: now.getTime(),
+  iso: now.toISOString(),
+  wib: wibFormatter.format(now),
+  utc: now.toUTCString(),
+  local: now.toLocaleString('id-ID'),
+  api_version: '1.0.2',
+  note: 'CortiezSensiX Time API by Cyrust',
+  copyright: '© 2024 Cyrust'
+};
+
+// Untuk Node.js
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = output;
+}
+
+// Output JSON langsung
+if (typeof window !== 'undefined' && window.location.pathname.includes('time.json')) {
+  document.write(JSON.stringify(output, null, 2));
+  document.close();
+}
