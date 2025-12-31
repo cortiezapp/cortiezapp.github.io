@@ -3,55 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verifikasi License Cortiez</title>
-<style>
-body { font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; background:#f6f8fa; margin:0; }
-.card { background:#fff; padding:20px 30px; border-radius:10px; box-shadow:0 4px 6px rgba(0,0,0,0.1); width:400px; border:1px solid #d0d7de; text-align:center; }
-h2 { margin-bottom:10px; }
-button { padding:10px 20px; border:none; border-radius:5px; background:#0969da; color:white; font-weight:bold; cursor:pointer; margin-top:10px; }
-input { width:100%; padding:10px; margin-top:10px; border-radius:5px; border:1px solid #ccc; }
-p { margin-top:15px; color:#24292f; font-weight:bold; }
-</style>
+<title>Verifikasi Cortiez</title>
 </head>
 <body>
-
-<div class="card">
-    <h2>Verifikasi License Cortiez</h2>
-    <input type="text" id="licenseKey" placeholder="Masukkan License Key"/>
-    <button id="btnVerify">Verifikasi & Buka App</button>
-    <p id="status"></p>
-</div>
-
 <script>
-document.getElementById('btnVerify').onclick = () => {
-    const key = document.getElementById('licenseKey').value.trim();
-    const statusEl = document.getElementById('status');
-    if(!key){ statusEl.innerText="Masukkan license key!"; return; }
-
-    // parsing timestamp dari key
-    const parts = key.split("-");
-    if(parts.length < 3){ statusEl.innerText="License tidak valid!"; return; }
-
-    const ts = Number(parts[2]);
-    if(isNaN(ts)){ statusEl.innerText="License tidak valid!"; return; }
-
-    const now = Date.now();
-    const hours = 24; // default durasi, bisa sesuai admin
-    const expire = ts + hours*3600*1000;
-
-    if(now > expire){
-        statusEl.innerText="License sudah expired!";
+(async function(){
+    // Ambil parameter dari URL
+    const params = new URLSearchParams(window.location.search);
+    const h = params.get("h"); // Android ID
+    if(!h) {
+        document.body.innerText = "Parameter h dibutuhkan!";
         return;
     }
 
-    localStorage.setItem("verified_key", key);
-    localStorage.setItem("verified_time", now);
+    // Ambil server time dari GitHub Pages
+    const timeResp = await fetch("https://cortiezapp.github.io/time/");
+    const timeJson = await timeResp.json();
+    const serverTime = timeJson.timestamp;
 
-    statusEl.innerText="Berhasil! Silakan buka App.";
+    // Hitung expire 2 jam dari serverTime
+    const expire = serverTime + 2*3600*1000;
 
-    setTimeout(()=>{ window.location = "cortiez://open"; }, 1000);
-};
+    // Hash SHA-256(h + expire)
+    async function sha256(str) {
+        const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+
+    const hash = await sha256(h + expire);
+
+    // Redirect ke app dengan param
+    const intentUrl = cortiez://verification?ok=1&h=${encodeURIComponent(h)}&expire=${expire}&hash=${hash};
+    document.body.innerText = "Verifikasi berhasil! Mengarahkan ke app...";
+    window.location.href = intentUrl;
+})();
 </script>
-
 </body>
 </html>
