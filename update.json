@@ -4,8 +4,8 @@
     "mandatory": true,
     "download_url": "https://cortiezapp.github.io/",
     "changelog": [
-  "FIX LOGIN"
-],
+      "FIX LOGIN"
+    ],
     "update_title": "Update Available! Gacor",
     "update_message": "New version brings improvements",
     "positive_button": "Update Now",
@@ -14,9 +14,9 @@
   
   "info_dialog": {
     "show_on_start": true,
-    "title": "Informasi",
-  "message": "Group WhatsApp:**\nhttps://chat.whatsapp.com/H01IcOVnL2WLXuHBE6AqWP\n\n🎁 **Video terbaik akan mendapat apresiasi khusus!**\n\n📢 **Jangan lupa follow update kami di:**\n• TikTok: https://www.tiktok.com/@cortiezapp\n• WhatsApp Channel: https://whatsapp.com/channel/0029Vb6ygqx9Bb5whdu1Wg2V\n\n🔥 **Fitur baru V1.4 sudah LIVE!**\nRasakan pengalaman gaming yang lebih smooth, responsif, dan presisi! 🚀",
+    "title": "🎉 Happy New Year 2026!",
+    "message": "🎆 **Selamat Tahun Baru 2026!** 🎆\n\nTerima kasih telah menjadi bagian dari perjalanan kami. Semoga tahun ini membawa kemenangan (Booyah!) dan kesuksesan untuk kita semua!\n\n🎁 **Event Spesial Tahun Baru:**\nKirim video terbaikmu di awal tahun ini dan dapatkan apresiasi khusus!\n\n📢 **Tetap Terhubung:**\n• TikTok: https://www.tiktok.com/@cortiezapp\n• WA Group: https://chat.whatsapp.com/H01IcOVnL2WLXuHBE6AqWP\n• WA Channel: https://whatsapp.com/channel/0029Vb6ygqx9Bb5whdu1Wg2V\n\n🚀 **Start 2026 with V1.4!**\nNikmati performa lebih smooth dan presisi di tahun yang baru ini!",
     "html_enabled": true,
-    "button_text": "OK"
+    "button_text": "GASKEN!"
   }
 }
