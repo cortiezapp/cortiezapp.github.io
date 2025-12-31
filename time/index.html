@@ -30,36 +30,4 @@
 </script>
 </head>
 <body></body>
-</html><!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<title>Cortiez Time API</title>
-<meta name="robots" content="noindex,nofollow">
-<script>
-(function () {
-  const now = new Date();
-
-  const wib = new Date(
-    now.toLocaleString("en-US", {
-      timeZone: "Asia/Jakarta"
-    })
-  );
-
-  const data = {
-    status: "success",
-    api: "cortiez-time",
-    version: "1.0",
-    timezone: "Asia/Jakarta",
-    timestamp: wib.getTime(),       // ms
-    unix: Math.floor(wib.getTime()/1000),
-    iso: wib.toISOString(),
-    wib: wib.toLocaleString("id-ID")
-  };
-
-  document.write(JSON.stringify(data));
-})();
-</script>
-</head>
-<body></body>
 </html>
