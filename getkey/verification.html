@@ -17,7 +17,7 @@
     }
 
     // Ambil server time dari GitHub Pages
-    const timeResp = await fetch("https://cortiezapp.github.io/time/");
+    const timeResp = await fetch("https://cortiezapp.github.io/time/index.html");
     const timeJson = await timeResp.json();
     const serverTime = timeJson.timestamp;
 
