@@ -2,8 +2,12 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Cortiez Time API</title>
 <meta name="robots" content="noindex,nofollow">
+<title>Cortiez Time API</title>
+</head>
+<body>
+<pre id="out"></pre>
+
 <script>
 (function () {
   const now = new Date();
@@ -19,15 +23,15 @@
     api: "cortiez-time",
     version: "1.0",
     timezone: "Asia/Jakarta",
-    timestamp: wib.getTime(),       // ms
-    unix: Math.floor(wib.getTime()/1000),
+    timestamp: wib.getTime(),
+    unix: Math.floor(wib.getTime() / 1000),
     iso: wib.toISOString(),
     wib: wib.toLocaleString("id-ID")
   };
 
-  document.write(JSON.stringify(data));
+  document.getElementById("out").textContent =
+    JSON.stringify(data);
 })();
 </script>
-</head>
-<body></body>
+</body>
 </html>
