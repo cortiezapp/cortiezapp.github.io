@@ -1,16 +1,20 @@
 {
-  "update_info": {
-    "latest_version": "1.4",
-    "mandatory": true,
-    "download_url": "https://cortiezapp.github.io/",
-    "changelog": [
-      "FIX LOGIN"
-    ],
-    "update_title": "Update Available! Gacor",
-    "update_message": "New version brings improvements",
-    "positive_button": "Update Now",
-    "negative_button": "Later"
-  },
+"update_info": {
+  "latest_version": "1.5",
+  "mandatory": true,
+  "download_url": "https://cortiezapp.blogspot.com",
+  "changelog": [
+    "OPTIMASI SENSITIVITAS FREE FIRE",
+    "AIM LEBIH STABIL & RESPONSIF",
+    "FIX LOGIN FREE FIRE",
+    "PERFORMA LEBIH RINGAN & ANTI LAG",
+    "BUG FIXES"
+  ],
+  "update_title": "Update FF Gacor! CortiezSensiX 1.5",
+  "update_message": "Update khusus Free Fire! Sensitivitas makin gacor, aim lebih nempel, dan performa lebih stabil. Wajib update agar tetap optimal di FF.",
+  "positive_button": "Update Sekarang",
+  "negative_button": "Nanti"
+},
   
   "info_dialog": {
     "show_on_start": false,
