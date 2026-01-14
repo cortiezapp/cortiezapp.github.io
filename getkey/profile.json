@@ -1,13 +1,11 @@
 {
   "status": "found",
   "is_banned": false,
-  "user_public_id": "888888",
+  "user_public_id": "ID-16134",
   "vip_level": 3,
   "vip_active": true,
   "vip_label": "PREMIUM VIP",
   "vip_expired": "2030-12-31",
   "ban_expired": "0",
-  "contact_admin": "Admin",
-  "app_version": "1.0.5",
-  "message": "Welcome Back!"
+  "contact_admin": "Admin"
 }
