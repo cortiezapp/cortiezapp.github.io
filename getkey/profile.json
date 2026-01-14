@@ -1,11 +1,1 @@
-{
-  "status": "found",
-  "is_banned": false,
-  "user_public_id": "ID-16134",
-  "vip_level": 3,
-  "vip_active": true,
-  "vip_label": "PREMIUM VIP",
-  "vip_expired": "2030-12-31",
-  "ban_expired": "0",
-  "contact_admin": "Admin"
-}
+{"status":"found","user_public_id":"ID-88888","vip_active":true,"vip_level":3,"vip_label":"SensiX Atlas","vip_expired":"Permanent","is_banned":false,"ban_expired":null,"contact_admin":"https://www.google.com/search?q=https://cortiezapp.blogspot.com"}
