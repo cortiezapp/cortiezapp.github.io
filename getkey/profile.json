@@ -1,0 +1,11 @@
+{
+  "status": "found",
+  "is_banned": false,
+  "user_public_id": "888888",
+  "vip_level": 5,
+  "vip_active": true,
+  "vip_label": "PREMIUM ULTRA VIP",
+  "vip_expired": "2099-12-31",
+  "ban_expired": "0",
+  "contact_admin": "https://t.me/admin_channel"
+}
